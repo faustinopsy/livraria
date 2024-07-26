@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +7,17 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="sidebar">
+    <button class="menu-btn" >
+        <span class="bar short"></span>
+        <span class="bar long"></span>
+        <span class="bar short"></span>
+    </button>
+    <div class="sidebar" id="sidebar">
         <div class="logo">Readowl</div>
         <nav>
             <ul>
                 <li><a href="#">Home</a></li>
-                <li><a href="#" class="active">My library</a></li>
+                <li><a href="#" class="active">Minha livraria</a></li>
                 <li><a href="#">Shop</a></li>
                 <li><a href="#">News</a></li>
             </ul>
@@ -20,7 +25,7 @@
         <div class="continue-reading">
             <img src="https://via.placeholder.com/100x150" alt="Current Book">
             <div class="book-info">
-                <span>Continue reading</span>
+                <span>Continuar a leitura</span>
                 <p>Web Design</p>
             </div>
             <div class="user">
@@ -31,9 +36,9 @@
     </div>
     <div class="main-content">
         <header>
-            <button class="shelves active">Shelves</button>
-            <button class="all-books">All Books</button>
-            <input type="search" placeholder="Search in My library">
+            <button class="shelves active">Favoritos</button>
+            <button class="all-books">Todos um livro</button>
+            <input type="search" placeholder="Procurar os livros">
         </header>
         <section class="shelf">
             <div class="bookshelf">
@@ -61,5 +66,6 @@
         </section>
         
     </div>
+    <script src="app.js"></script>
 </body>
 </html>

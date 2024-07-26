@@ -75,7 +75,7 @@ body {
 .continue-reading .user {
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: left;
     margin-top: 10px;
 }
 
@@ -183,7 +183,7 @@ header input[type="search"]::placeholder {
 }
 
 img{
-    box-shadow: -3px 2px 5px 2px rgba(0, 0, 0, 0.1);
+    box-shadow: 3px -2px 3px 2px rgba(0, 0, 0, 0.1);
 }
 .bookshelf .book::after {
     content: "";

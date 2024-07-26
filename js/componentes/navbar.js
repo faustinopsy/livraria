@@ -3,7 +3,14 @@ import { renderContent } from '../router.js';
 export function initializeNavbar() {
     const sidebar = document.getElementById('sidebar');
     sidebar.innerHTML = `
-        <div class="logo">Readowl</div>
+        <div class="continue-reading">
+            <div class="book-info">
+                <p>Faustino, R.</p>
+            </div>
+            <div class="user">
+                <img src="img/eu.jpg" alt="User" width="50px">
+            </div>
+        </div>
         <nav>
             <ul id="nav-links">
                 <li><a href="#home">Home</a></li>
@@ -12,17 +19,7 @@ export function initializeNavbar() {
                 <li><a href="#news">News</a></li>
             </ul>
         </nav>
-        <div class="continue-reading">
-            <img src="img/livro1.png" alt="Current Book">
-            <div class="book-info">
-                <span>Continuar a leitura</span>
-                <p>Web Design</p>
-            </div>
-            <div class="user">
-                <img src="img/eu.jpg" alt="User" width="50px">
-                <p>Faustino, R.</p>
-            </div>
-        </div>
+        
     `;
 
     const navLinks = document.querySelectorAll('#nav-links a');

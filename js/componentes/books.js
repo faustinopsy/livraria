@@ -24,23 +24,38 @@ function render(data) {
     prateleira3.innerHTML = ''; 
 
     data.prateleira1.forEach(book => {
+        const link = document.createElement('a');
+        link.href = book.link;
+        link.target = '_blank';
         const img = document.createElement('img');
         img.src = book.image;
         img.alt = book.title;
-        prateleira1.appendChild(img);
+        img.classList.add('book-image'); 
+        link.appendChild(img);
+        prateleira1.appendChild(link);
     });
 
     data.prateleira2.forEach(book => {
+        const link = document.createElement('a');
+        link.href = book.link;
+        link.target = '_blank';
         const img = document.createElement('img');
         img.src = book.image;
         img.alt = book.title;
-        prateleira2.appendChild(img);
+        img.classList.add('book-image'); 
+        link.appendChild(img);
+        prateleira2.appendChild(link);
     });
 
     data.prateleira3.forEach(book => {
+        const link = document.createElement('a');
+        link.href = book.link;
+        link.target = '_blank';
         const img = document.createElement('img');
         img.src = book.image;
         img.alt = book.title;
-        prateleira3.appendChild(img);
+        img.classList.add('book-image'); 
+        link.appendChild(img);
+        prateleira3.appendChild(link);
     });
 }

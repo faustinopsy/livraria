@@ -1,17 +1,53 @@
 {
     "prateleira1": [
-        { "title": "Book 1", "image": "img/livro1.png" },
-        { "title": "Book 2", "image": "img/livro2.png" },
-        { "title": "Book 3", "image": "img/livro3.png" }
+        {
+            "title": "Book 1",
+            "image": "https://m.media-amazon.com/images/I/71qdIY6YvmL._SY522_.jpg",
+            "link": "https://amzn.to/4c3ON9N"
+        },
+        {
+            "title": "Book 2",
+            "image": "https://m.media-amazon.com/images/I/512TIMbCIqL._SY522_.jpg",
+            "link": "https://amzn.to/4dexrb4"
+        },
+        {
+            "title": "Book 3",
+            "image": "https://m.media-amazon.com/images/I/61TIzdLY+NL._SY522_.jpg",
+            "link": "https://amzn.to/4d3Qt4w"
+        }
     ],
     "prateleira2": [
-        { "title": "Book 4", "image": "img/livro4.png" },
-        { "title": "Book 5", "image": "img/livro5.png" },
-        { "title": "Book 6", "image": "img/livro6.png" }
+        {
+            "title": "Book 4",
+            "image": "https://m.media-amazon.com/images/I/71qdIY6YvmL._SY522_.jpg",
+            "link": "https://amzn.to/4c3ON9N"
+        },
+        {
+            "title": "Book 5",
+            "image": "https://m.media-amazon.com/images/I/512TIMbCIqL._SY522_.jpg",
+            "link": "https://amzn.to/4dexrb4"
+        },
+        {
+            "title": "Book 6",
+            "image": "https://m.media-amazon.com/images/I/61TIzdLY+NL._SY522_.jpg",
+            "link": "https://amzn.to/4d3Qt4w"
+        }
     ],
     "prateleira3": [
-        { "title": "Book 7", "image": "img/livro1.png" },
-        { "title": "Book 8", "image": "img/livro2.png" },
-        { "title": "Book 9", "image": "img/livro3.png" }
+        {
+            "title": "Book 7",
+            "image": "https://m.media-amazon.com/images/I/71qdIY6YvmL._SY522_.jpg",
+            "link": "https://amzn.to/4c3ON9N"
+        },
+        {
+            "title": "Book 8",
+            "image": "https://m.media-amazon.com/images/I/512TIMbCIqL._SY522_.jpg",
+            "link": "https://amzn.to/4dexrb4"
+        },
+        {
+            "title": "Book 9",
+            "image": "https://m.media-amazon.com/images/I/61TIzdLY+NL._SY522_.jpg",
+            "link": "https://amzn.to/4d3Qt4w"
+        }
     ]
 }

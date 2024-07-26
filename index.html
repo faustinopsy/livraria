@@ -4,68 +4,16 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Readowl Library</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
-    <button class="menu-btn" >
+    <button class="menu-btn" id="menu-btn">
         <span class="bar short"></span>
         <span class="bar long"></span>
         <span class="bar short"></span>
     </button>
-    <div class="sidebar" id="sidebar">
-        <div class="logo">Readowl</div>
-        <nav>
-            <ul>
-                <li><a href="#">Home</a></li>
-                <li><a href="#" class="active">Minha livraria</a></li>
-                <li><a href="#">Shop</a></li>
-                <li><a href="#">News</a></li>
-            </ul>
-        </nav>
-        <div class="continue-reading">
-            <img src="img/livro1.png" alt="Current Book">
-            <div class="book-info">
-                <span>Continuar a leitura</span>
-                <p>Web Design</p>
-            </div>
-            <div class="user">
-                <img src="img/eu.jpg" alt="User" width="50px">
-                <p>Faustino, R.</p>
-            </div>
-        </div>
-    </div>
-    <div class="main-content">
-        <header>
-            <button class="shelves active">Favoritos</button>
-            <button class="all-books">Todos</button>
-            <input type="search" placeholder="Procurar os livros">
-        </header>
-        <section class="shelf">
-            <div class="bookshelf">
-                <img src="img/livro1.png" alt="Book 1">
-                <img src="img/livro2.png" alt="Book 2">
-                <img src="img/livro3.png" alt="Book 3">
-            </div>
-            <h2></h2>
-        </section>
-        <section class="shelf">
-            <div class="bookshelf">
-                <img src="img/livro4.png" alt="Book 4">
-                <img src="img/livro5.png" alt="Book 5">
-                <img src="img/livro6.png" alt="Book 6">
-            </div>
-            <h2></h2>
-        </section>
-        <section class="shelf">
-            <div class="bookshelf">
-                <img src="img/livro1.png" alt="Book 7">
-                <img src="img/livro2.png" alt="Book 8">
-                <img src="img/livro3.png" alt="Book 9">
-            </div>
-            <h2></h2>
-        </section>
-        
-    </div>
-    <script src="app.js"></script>
+    <div class="sidebar" id="sidebar"></div>
+    <div class="main-content" id="main-content"></div>
+    <script type="module" src="js/app.js"></script>
 </body>
 </html>

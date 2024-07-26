@@ -1,0 +1,17 @@
+{
+    "prateleira1": [
+        { "title": "Book 1", "image": "img/livro1.png" },
+        { "title": "Book 2", "image": "img/livro2.png" },
+        { "title": "Book 3", "image": "img/livro3.png" }
+    ],
+    "prateleira2": [
+        { "title": "Book 4", "image": "img/livro4.png" },
+        { "title": "Book 5", "image": "img/livro5.png" },
+        { "title": "Book 6", "image": "img/livro6.png" }
+    ],
+    "prateleira3": [
+        { "title": "Book 7", "image": "img/livro1.png" },
+        { "title": "Book 8", "image": "img/livro2.png" },
+        { "title": "Book 9", "image": "img/livro3.png" }
+    ]
+}

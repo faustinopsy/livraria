@@ -2,12 +2,6 @@ import { renderBooks } from '../componentes/books.js';
 
 export function renderLivros() {
     const mainContent = document.getElementById('main-content');
-        if(location.hash==='#livros' && innerWidth < '600'){
-                mainContent.style.marginLeft= '-265px';
-            }else{
-                mainContent.style.marginLeft= '-0px';
-            }
-        
     mainContent.innerHTML = `
         <header>
             <button class="shelves active">Favoritos</button>

@@ -7,7 +7,7 @@ body {
 
 .sidebar {
     display: block;
-    width: 250px; 
+    width: 20%; 
     background-color: #fff;
     padding: 20px;
     box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
@@ -94,10 +94,11 @@ p{
 }
 
 .main-content {
-    position: relative;
+    position: absolute;
+    width: 70%;
     flex-grow: 1;
     padding: 10px;
-    left: 12px;
+    left: 26%;
     background-color: #fff7f2;
     box-shadow:  inset 0.2rem 0.2rem 0.5rem #c1cae5, inset -0.2rem -0.2rem 0.5rem #ffffff;
     border-radius: 10px;
@@ -248,7 +249,7 @@ img:hover{
 }
 .prateleira{
     display: flex;
-
+    flex-wrap: wrap;
 }
 .product-card {
     display: flex;
@@ -260,11 +261,15 @@ img:hover{
 }
 
 .product-image {
-    width: 100%;
+    width: 85%;
     height: auto;
 }
 #cart-content{
     display: flex;
+    border: #218838 dashed 2px;
+    flex-direction: column;
+    height: 250px;
+    overflow-y: scroll;
 }
 .add-to-cart {
     background-color: #28a745;
@@ -338,8 +343,9 @@ img:hover{
     }
 
     .main-content {
+        width: 87%;
         margin: 20px;
-        margin-left: -137px;
+        margin-left: -21%;
         margin-top: 71px;
     }
 
@@ -384,5 +390,8 @@ img:hover{
     }
     .all-books{
         display: none;
+    }
+    img{
+        width: 70px;
     }
 }

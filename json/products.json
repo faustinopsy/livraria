@@ -20,7 +20,7 @@
     {
         "id": 3,
         "name": "Curso de PHP",
-        "description": "Torne-se um desenvolvedor PHP profissional.",
+        "description": "Torne-se um desenvolvedor PHP.",
         "price": 79.99,
         "imageSrc": "img/php-course.jpg",
         "altText": "Curso de PHP",

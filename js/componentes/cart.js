@@ -12,7 +12,7 @@ export function addToCart(product) {
 }
 
 export function removeFromCart(productId) {
-    cart = cart.filter(item => item.id !== productId);
+    cart = cart.filter(item => item.id !== parseInt(productId, 10));
     saveCart();
     renderCart();
 }
@@ -54,7 +54,6 @@ export function renderCart() {
     totalElement.innerHTML = `Total: R$ ${total.toFixed(2)}`;
     cartContent.appendChild(totalElement);
 
-
     const checkoutButton = document.createElement('button');
     checkoutButton.textContent = 'Checkout';
     checkoutButton.classList.add('checkout-button');
@@ -62,7 +61,6 @@ export function renderCart() {
         alert('Checkout realizado com sucesso!');
     });
     cartContent.appendChild(checkoutButton);
-
 
     const clearCartButton = document.createElement('button');
     clearCartButton.textContent = 'Limpar Carrinho';

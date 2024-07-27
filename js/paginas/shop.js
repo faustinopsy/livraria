@@ -2,10 +2,11 @@ import { addToCart, renderCart } from '../componentes/cart.js';
 
 export function renderShop() {
     const mainContent = document.getElementById('main-content');
+ 
+    mainContent.innerHTML = '';
     mainContent.innerHTML = `
         <h1>Shop</h1>
         <p>Confira nossos produtos.</p>
-        <div id="cart-content"></div>
         <section class="shelf"><p>Tecnologia</p>
             <div class="prateleira" id="prateleira-tecnologia"></div>
             <h2></h2>
@@ -29,14 +30,13 @@ export function renderShop() {
                 'Ficção': document.getElementById('prateleira-ficcao')
             };
 
-            // Limpa o conteúdo das prateleiras
             for (let key in categorias) {
                 categorias[key].innerHTML = '';
             }
 
             products.forEach(product => {
                 const productCard = document.createElement('div');
-                productCard.classList.add('product-card'); // Adiciona a classe product-card
+                productCard.classList.add('product-card'); 
                 productCard.innerHTML = `
                     <img src="${product.imageSrc}" alt="${product.altText}" class="product-image">
                     <h3>${product.name}</h3>

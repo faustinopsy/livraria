@@ -2,6 +2,7 @@ import { renderContent } from '../router.js';
 import { initializeSidebar } from './sidebar.js';
 export function initializeNavbar() {
     initializeSidebar()
+    const carrinho = location.hash==='#shop' ? '<div id="cart-content"></div>': '';
     const sidebar = document.getElementById('sidebar');
     sidebar.innerHTML = `
         <div class="continue-reading">
@@ -20,6 +21,8 @@ export function initializeNavbar() {
                 <li><a href="#news">News</a></li>
             </ul>
         </nav>
+        ${carrinho}
+        
     `;
 
     const navLinks = document.querySelectorAll('#nav-links a');

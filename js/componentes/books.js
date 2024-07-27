@@ -30,7 +30,6 @@ function render(data) {
         const img = document.createElement('img');
         img.src = book.image;
         img.alt = book.title;
-        img.classList.add('book-image'); 
         link.appendChild(img);
         prateleira1.appendChild(link);
     });
@@ -42,7 +41,6 @@ function render(data) {
         const img = document.createElement('img');
         img.src = book.image;
         img.alt = book.title;
-        img.classList.add('book-image'); 
         link.appendChild(img);
         prateleira2.appendChild(link);
     });
@@ -54,7 +52,6 @@ function render(data) {
         const img = document.createElement('img');
         img.src = book.image;
         img.alt = book.title;
-        img.classList.add('book-image'); 
         link.appendChild(img);
         prateleira3.appendChild(link);
     });

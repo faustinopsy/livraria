@@ -1,0 +1,80 @@
+let cart = JSON.parse(localStorage.getItem('cart')) || [];
+
+export function addToCart(product) {
+    const productInCart = cart.find(item => item.id === product.id);
+    if (productInCart) {
+        productInCart.quantity += 1;
+    } else {
+        cart.push({ ...product, quantity: 1 });
+    }
+    saveCart();
+    renderCart();
+}
+
+export function removeFromCart(productId) {
+    cart = cart.filter(item => item.id !== productId);
+    saveCart();
+    renderCart();
+}
+
+export function clearCart() {
+    cart = [];
+    saveCart();
+    renderCart();
+}
+
+export function saveCart() {
+    localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+export function renderCart() {
+    const cartContent = document.getElementById('cart-content');
+    cartContent.innerHTML = '';
+
+    if (cart.length === 0) {
+        cartContent.innerHTML = '<p>O carrinho está vazio.</p>';
+        return;
+    }
+
+    cart.forEach(item => {
+        const cartItem = document.createElement('div');
+        cartItem.classList.add('cart-item');
+        cartItem.innerHTML = `
+            <h4>${item.name}</h4>
+            <p>Quantidade: ${item.quantity}</p>
+            <p>Preço: R$ ${(item.price * item.quantity).toFixed(2)}</p>
+            <button class="remove-from-cart" data-id="${item.id}">Remover</button>
+        `;
+        cartContent.appendChild(cartItem);
+    });
+
+    const total = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    const totalElement = document.createElement('p');
+    totalElement.classList.add('cart-total');
+    totalElement.innerHTML = `Total: R$ ${total.toFixed(2)}`;
+    cartContent.appendChild(totalElement);
+
+
+    const checkoutButton = document.createElement('button');
+    checkoutButton.textContent = 'Checkout';
+    checkoutButton.classList.add('checkout-button');
+    checkoutButton.addEventListener('click', () => {
+        alert('Checkout realizado com sucesso!');
+    });
+    cartContent.appendChild(checkoutButton);
+
+
+    const clearCartButton = document.createElement('button');
+    clearCartButton.textContent = 'Limpar Carrinho';
+    clearCartButton.classList.add('clear-cart-button');
+    clearCartButton.addEventListener('click', clearCart);
+    cartContent.appendChild(clearCartButton);
+
+    const removeFromCartButtons = document.querySelectorAll('.remove-from-cart');
+    removeFromCartButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const productId = button.getAttribute('data-id');
+            removeFromCart(productId);
+        });
+    });
+}

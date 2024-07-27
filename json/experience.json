@@ -1,0 +1,19 @@
+[
+  
+    {
+      "title": "Professor de Desenvolvimeto Web",
+      "duration": "2023 — Presente",
+      "description": "<p>Tópicos Iniciais do desenvolvimento Web I (Frontend),</p><p> Tópicos Intermediários do desenvolvimento Web II (Backend),</p><p> Tópicos Avançados do desenvolvimento Web III (Backend III).</p>"
+    },
+    {
+      "title": "Analista Desenvolvedor",
+      "duration": "2022 — 2023",
+      "description": "<p>Desenvolvimento e manunteção de sistemas web com PHP</p><p> e seus Frameworks Laravel e CodeIgnite, Javascript e Vue,</p><p> e PostgreSQL, integrações Rest e Soap.</p><p> criei integrações entre sistemas diversos com detrans de vários estados,</p> onde os sistemas de financeiras e bancos trasmitem seus dados de formas variadas</p><p> e a integração com as API dos detrans de cada estado era fundamental.</p>"
+    },
+    {
+      "title": "Desenvolvedor Full Stack",
+      "duration": "2010 — 2022",
+      "description": "<p>Desenvolvimento e manunteção de aplicações web com PHP,</p><p> Javascript e MySQL, SQLServer.<p> Desenvolvi sozinho Alguns sistemas na PMESP,</p><p> como o sistema SISMEN (sistema de saúde mental) </p><p>Sistema de Gestão de Relacionamento com o Cliente (CRM),</p><p> também automatização do software de Inteligência para gerenciamento de crises baseado em mutiusuário</p><p> e geolocalização de ocorrências este último algumas outras pessoas contribuiram,</p><p> mas existem outros que são internos da área de inteligência policial.</p>"
+    }
+  ]
+

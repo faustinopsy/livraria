@@ -1,11 +1,12 @@
-import { renderHome } from './paginas/home.js';
-import { renderLibrary } from './paginas/library.js';
+import { renderSobre } from './paginas/sobre.js';
+import { renderLivros } from './paginas/livros.js';
 import { renderShop } from './paginas/shop.js';
 import { renderNews } from './paginas/news.js';
+import { updateActiveLink } from './componentes/navbar.js'; 
 
 const pages = {
-    home: renderHome,
-    library: renderLibrary,
+    sobreMim: renderSobre,
+    livros: renderLivros,
     shop: renderShop,
     news: renderNews
 };
@@ -16,4 +17,5 @@ export function renderContent(page) {
 
     const renderPage = pages[page] || (() => { mainContent.innerHTML = '<h1>Página não encontrada</h1>'; });
     renderPage();
+    updateActiveLink(page); 
 }

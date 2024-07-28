@@ -1,4 +1,4 @@
-export function renderNews() {
+export function renderBlog() {
     const mainContent = document.getElementById('main-content');
     mainContent.innerHTML = `
         <header>

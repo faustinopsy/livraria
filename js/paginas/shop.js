@@ -21,7 +21,13 @@ export function renderShop() {
         </section>
     `;
 
-    fetch('json/products.json')
+    fetch('http://localhost:8000/src/products', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + localStorage.getItem('token')
+        }
+    })
         .then(response => response.json())
         .then(products => {
             const categorias = {
@@ -35,13 +41,14 @@ export function renderShop() {
             }
 
             products.forEach(product => {
+                const price = parseFloat(product.price); 
                 const productCard = document.createElement('div');
                 productCard.classList.add('product-card'); 
                 productCard.innerHTML = `
                     <img src="${product.imageSrc}" alt="${product.altText}" class="product-image">
                     <h3>${product.name}</h3>
                     <p>${product.description}</p>
-                    <p>R$ ${product.price.toFixed(2)}</p>
+                    <p>R$ ${price.toFixed(2)}</p>
                     <button class="add-to-cart" data-id="${product.id}">Adicionar ao carrinho</button>
                 `;
 

@@ -58,8 +58,25 @@ export function renderCart() {
     checkoutButton.textContent = 'Checkout';
     checkoutButton.classList.add('checkout-button');
     checkoutButton.addEventListener('click', () => {
-        alert('Checkout realizado com sucesso!');
+        fetch('http://localhost:8000/src/paypal/create-payment', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            },
+            body: JSON.stringify(cart)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.approval_url) {
+                window.location.href = data.approval_url;
+            } else {
+                alert('Erro ao iniciar o checkout.');
+            }
+        })
+        .catch(error => console.error('Error during checkout:', error));
     });
+    
     cartContent.appendChild(checkoutButton);
 
     const clearCartButton = document.createElement('button');

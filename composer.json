@@ -1,0 +1,13 @@
+{
+    "autoload": {
+        "psr-4": {
+            "src\\": "src/"
+        }
+    },
+    "require": {
+        "firebase/php-jwt": "^5.4",
+        "vlucas/phpdotenv": "^5.3",
+        "mercadopago/dx-php": "3.0.7",
+        "paypal/rest-api-sdk-php": "^1.14"
+    }
+}

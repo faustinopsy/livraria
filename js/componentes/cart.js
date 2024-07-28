@@ -1,3 +1,4 @@
+import config from '../config.js';
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 export function addToCart(product) {
@@ -58,7 +59,7 @@ export function renderCart() {
     checkoutButton.textContent = 'Checkout';
     checkoutButton.classList.add('checkout-button');
     checkoutButton.addEventListener('click', () => {
-        fetch('http://localhost:8000/src/checkout', {
+        fetch(`${config.baseURL}src/checkout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

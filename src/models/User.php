@@ -16,23 +16,30 @@ class User {
         $this->conn = $db;
     }
 
-    public function create() {
-        $query = "INSERT INTO " . $this->table . " SET name=:name, email=:email, password=:password";
+    public function create($data) {
+        $nome = $data['name'];
+        $email = $data['email'];
+        $senha = password_hash($data['password'], PASSWORD_BCRYPT);
+        $query = "INSERT INTO " . $this->table . " (name, email, password, role) VALUES (:name, :emailx, :password, :role)";
         $stmt = $this->conn->prepare($query);
 
-        $this->name = htmlspecialchars(strip_tags($this->name));
-        $this->email = htmlspecialchars(strip_tags($this->email));
-        $this->password = password_hash($this->password, PASSWORD_BCRYPT);
+        $stmt->bindParam(':name', $nome);
+        $stmt->bindParam(':emailx', $email);
+        $stmt->bindParam(':password', $senha );
+        $stmt->bindParam(':role', $data['role']);
 
-        $stmt->bindParam(":name", $this->name);
-        $stmt->bindParam(":email", $this->email);
-        $stmt->bindParam(":password", $this->password);
-
-        if($stmt->execute()) {
+        if ($stmt->execute()) {
             return true;
         }
-
         return false;
+    }
+
+    public function findByEmail($email) {
+        $query = "SELECT * FROM " . $this->table . " WHERE email = :email";
+        $stmt = $this->conn->prepare($query);
+        $stmt->bindParam(':email', $email);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
     public function login() {

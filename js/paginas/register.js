@@ -1,3 +1,4 @@
+import config from '../config.js';
 import { updateNavbar } from '../componentes/navbar.js';
 
 export function renderRegister() {
@@ -28,7 +29,7 @@ export function renderRegister() {
         const email = registerForm.email.value;
         const password = registerForm.password.value;
         
-        fetch('http://localhost:8000/src/auth/register', {
+        fetch(`${config.baseURL}src/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -37,7 +38,7 @@ export function renderRegister() {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.message === 'User registered successfully') {
+            if (data.message === 'Registrado com sucesso') {
                 alert('Registro bem-sucedido');
                 window.location.hash = '#login';
                 updateNavbar();

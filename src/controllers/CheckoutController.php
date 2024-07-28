@@ -1,8 +1,6 @@
 <?php
 namespace src\controllers;
 
-use PDO;
-
 class CheckoutController {
     private $db;
 
@@ -15,7 +13,7 @@ class CheckoutController {
             $this->db->beginTransaction();
 
             foreach ($cart as $product) {
-                $query = "INSERT INTO purchased_products (user_id, product_id, quantity) VALUES (:user_id, :product_id, :quantity)";
+                $query = "INSERT INTO purchased_products (user_id, product_id, quantity, status) VALUES (:user_id, :product_id, :quantity, 'reserved')";
                 $stmt = $this->db->prepare($query);
                 $stmt->bindParam(':user_id', $userId);
                 $stmt->bindParam(':product_id', $product['id']);
@@ -24,7 +22,7 @@ class CheckoutController {
             }
 
             $this->db->commit();
-            return ['status'=> true, 'message' => 'Products purchased successfully'];
+            return ['status'=> true, 'message' => 'Reserva feita'];
         } catch (\Exception $e) {
             $this->db->rollBack();
             return ['error' => 'Error processing checkout: ' . $e->getMessage()];

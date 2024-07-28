@@ -1,3 +1,4 @@
+import config from '../config.js';
 import { addToCart, renderCart } from '../componentes/cart.js';
 
 export function renderShop() {
@@ -21,7 +22,7 @@ export function renderShop() {
         </section>
     `;
 
-    fetch('http://localhost:8000/src/products', {
+    fetch(`${config.baseURL}src/products`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

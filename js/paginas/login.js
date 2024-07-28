@@ -1,5 +1,5 @@
-import { updateNavbar } from '../componentes/navbar.js';
-
+import config from '../config.js';
+import { renderContent } from '../router.js';
 export function renderLogin() {
     const mainContent = document.getElementById('main-content');
     mainContent.innerHTML = `
@@ -21,10 +21,10 @@ export function renderLogin() {
     const loginForm = document.getElementById('login-form');
     loginForm.addEventListener('submit', (event) => {
         event.preventDefault();
-        const email = loginForm.email.value;
-        const password = loginForm.password.value;
-        
-        fetch('http://localhost:8000/src/auth/login', {
+        const email = document.getElementById('email').value;
+        const password = document.getElementById('password').value;
+
+        fetch(`${config.baseURL}src/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -35,13 +35,12 @@ export function renderLogin() {
         .then(data => {
             if (data.token) {
                 localStorage.setItem('token', data.token);
-                alert('Login bem-sucedido');
-                window.location.hash = '#minhaArea';
-                updateNavbar();
+                alert('Login successful');
+                renderContent('minhaArea');
             } else {
-                alert('Falha no login: ' + data.message);
+                alert('Login failed');
             }
         })
-        .catch(error => console.error('Error:', error));
+        .catch(error => console.error('Error during login:', error));
     });
 }

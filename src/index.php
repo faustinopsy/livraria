@@ -9,7 +9,7 @@ use src\controllers\ProductController;
 use src\controllers\CheckoutController;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use src\controllers\PayPalController;
+use src\controllers\AdminController;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -17,9 +17,9 @@ header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
-$dados = $dotenv->load();
+$segredojwt = $dotenv->load();
 
-$database = new Database($dados);
+$database = new Database($segredojwt);
 $db = $database->getConnection();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -38,7 +38,7 @@ switch ($uri) {
         if ($method == 'POST') {
             $data = json_decode(file_get_contents("php://input"), true);
             $controller = new AuthController($db);
-            $response = $controller->login($data,$dados);
+            $response = $controller->login($data,$segredojwt);
             echo json_encode($response);
         }
         break;
@@ -55,16 +55,16 @@ switch ($uri) {
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                 $jwt = $matches[1];
                 try {
-                    $decoded = JWT::decode($jwt, new Key($dados['JWT_SECRET'], 'HS256'));
+                    $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
                     $controller = new ProductController($db);
-                    $response = $controller->getPurchasedProducts($decoded->sub);
+                    $response = $controller->getPurchasedProducts($decoded->data->userId);
                     echo json_encode($response);
                 } catch (Exception $e) {
-                    echo json_encode(["message" => "Access denied"]);
+                    echo json_encode(["message" => "Acesso negado"]);
                     http_response_code(401);
                 }
             } else {
-                echo json_encode(["message" => "Authorization header not found"]);
+                echo json_encode(["message" => "nenhuma autorização no cabeçalho"]);
                 http_response_code(401);
             }
         }
@@ -75,52 +75,126 @@ switch ($uri) {
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                 $jwt = $matches[1];
                 try {
-                    $decoded = JWT::decode($jwt, new Key($dados['JWT_SECRET'], 'HS256'));
+                    $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
                     $data = json_decode(file_get_contents("php://input"), true);
                     $controller = new CheckoutController($db);
-                    $response = $controller->processCheckout($decoded->sub, $data);
+                    $response = $controller->processCheckout($decoded->data->userId, $data);
                     echo json_encode($response);
                 } catch (Exception $e) {
-                    echo json_encode(["message" => "Access denied"]);
+                    echo json_encode(["message" => "Acesso negado"]);
                     http_response_code(401);
                 }
             } else {
-                echo json_encode(["message" => "Authorization header not found"]);
+                echo json_encode(["message" => "nenhuma autorização no cabeçalho"]);
                 http_response_code(401);
             }
         }
         break;
-    case '/src/paypal/create-payment':
-        if ($method == 'POST') {
-            $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
-            if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
-                $jwt = $matches[1];
-                try {
-                    $decoded = JWT::decode($jwt, new Key($dados['JWT_SECRET'], 'HS256'));
-                    $data = json_decode(file_get_contents("php://input"), true);
-                    $controller = new PayPalController();
-                    $response = $controller->createPayment($data);
-                    echo json_encode(['approval_url' => $response]);
-                } catch (Exception $e) {
-                    echo json_encode(["message" => "Access denied"]);
+        case '/src/admin/reservations':
+            if ($method == 'GET') {
+                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+                    $jwt = $matches[1];
+                    try {
+                        $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                        if ($decoded->data->role !== 'admin') {
+                            echo json_encode(["message" => "Acesso negado"]);
+                            http_response_code(403);
+                            exit;
+                        }
+                        $controller = new AdminController($db);
+                        $response = $controller->getReservations();
+                        echo json_encode($response);
+                    } catch (Exception $e) {
+                        echo json_encode(["message" => "Acesso negado"]);
+                        http_response_code(401);
+                    }
+                } else {
+                    echo json_encode(["message" => "nenhuma autorização no cabeçalho"]);
                     http_response_code(401);
                 }
-            } else {
-                echo json_encode(["message" => "Authorization header not found"]);
-                http_response_code(401);
             }
-        }
-        break;
-
-    case '/src/paypal/execute-payment':
-        if ($method == 'POST') {
-            $paymentId = $_POST['paymentId'];
-            $payerId = $_POST['payerId'];
-            $controller = new PayPalController();
-            $response = $controller->executePayment($paymentId, $payerId);
-            echo json_encode($response);
-        }
-        break;
+            break;
+        case '/src/admin/update-status':
+            if ($method == 'POST') {
+                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+                    $jwt = $matches[1];
+                    try {
+                        $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                        if ($decoded->data->role !== 'admin') {
+                            echo json_encode(["message" => "Acesso negado"]);
+                            http_response_code(403);
+                            exit;
+                        }
+                        $data = json_decode(file_get_contents("php://input"), true);
+                        $controller = new AdminController($db);
+                        $response = $controller->updateStatus($data['id'], $data['status']);
+                        echo json_encode($response);
+                    } catch (Exception $e) {
+                        echo json_encode(["message" => "Acesso negado"]);
+                        http_response_code(401);
+                    }
+                } else {
+                    echo json_encode(["message" => "nenhuma autorização no cabeçalho"]);
+                    http_response_code(401);
+                }
+            }
+            break;
+        case '/src/admin/remove-reservation':
+            if ($method == 'POST') {
+                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+                    $jwt = $matches[1];
+                    try {
+                        $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                        if ($decoded->data->role !== 'admin') {
+                            echo json_encode(["message" => "Acesso negado"]);
+                            http_response_code(403);
+                            exit;
+                        }
+                        $data = json_decode(file_get_contents("php://input"), true);
+                        $controller = new AdminController($db);
+                        $response = $controller->removeReservation($data['id']);
+                        echo json_encode($response);
+                    } catch (Exception $e) {
+                        echo json_encode(["message" => "Acesso negado"]);
+                        http_response_code(401);
+                    }
+                } else {
+                    echo json_encode(["message" => "nenhuma autorização no cabeçalho"]);
+                    http_response_code(401);
+                }
+            }
+            break;
+        case '/src/admin/sales':
+            if ($method == 'GET') {
+                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
+                    $jwt = $matches[1];
+                    try {
+                        $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                        if ($decoded->data->role !== 'admin') {
+                            echo json_encode(["message" => "Access denied"]);
+                            http_response_code(403);
+                            exit;
+                        }
+                        $page = $_GET['page'] ?? 1;
+                        $startDate = $_GET['start_date'] ?? '';
+                        $endDate = $_GET['end_date'] ?? '';
+                        $controller = new AdminController($db);
+                        $response = $controller->getSales($page, $startDate, $endDate);
+                        echo json_encode($response);
+                    } catch (Exception $e) {
+                        echo json_encode(["message" => "Access denied"]);
+                        http_response_code(401);
+                    }
+                } else {
+                    echo json_encode(["message" => "Authorization header not found"]);
+                    http_response_code(401);
+                }
+            }
+            break;
         default:
             echo json_encode(["message" => "Route not found"]);
             break;

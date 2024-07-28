@@ -322,6 +322,22 @@ img:hover{
 .remove-from-cart:hover {
     background-color: #c82333;
 }
+.confirm-sale{
+    box-shadow: inset 3px 3px 5px 0px;
+    height: 45px;
+    background-color: rgb(70, 177, 12);
+    border: 0;
+    width: 30%;
+    cursor: pointer;
+}
+.remove-reservation{
+    box-shadow: inset 3px 3px 5px 0px;
+    height: 45px;
+    background-color: orange;
+    border: 0;
+    width: 30%;
+    cursor: pointer;
+}
 
 .login-container, .register-container {
     max-width: 400px;
@@ -374,6 +390,43 @@ img:hover{
     color: #e6b393;
 }
 
+.status-reserved {
+    background-color: lightyellow;
+    border: 1px solid gold;
+    color:#28a745;
+}
+.status-reserved p{
+    color:#28a745;
+}
+.status-sold {
+    background-color: lightgreen;
+    border: 1px solid green;
+    color: rgb(255, 255, 255);
+}
+.status-sold p{
+    color:#ffffff;
+}
+.status-default {
+    background-color: lightgray;
+    border: 1px solid gray;
+}
+
+.product-card {
+    padding: 20px;
+    margin: 10px;
+    border-radius: 5px;
+}
+
+.product-image {
+    width: 150px;
+    height: auto;
+}
+
+.products-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+}
 
 @media (max-width: 768px) {
     .book-image {
@@ -444,4 +497,77 @@ img:hover{
     img{
         width: 70px;
     }
+}
+
+.custom-menu {
+    display: none;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    padding: 10px;
+    font-size: 1.2em;
+    border-radius: 30px;
+}
+
+.custom-menu ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+
+.custom-menu ul li {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.custom-menu ul li:hover {
+    background-color: #eee;
+}
+.tabs {
+    display: flex;
+    margin-bottom: 20px;
+}
+
+.tab {
+    flex: 1;
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    background-color: #f1f1f1;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-right: 10px;
+}
+
+.tab.active {
+    background-color: #fff;
+    border-bottom: none;
+    font-weight: bold;
+}
+
+.tab:last-child {
+    margin-right: 0;
+}
+
+#admin-content {
+    padding: 20px;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.reservations-container, .sales-container {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.reservation-card, .sale-card {
+    flex: 1 1 200px;
+    padding: 10px;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f9f9f9;
 }

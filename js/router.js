@@ -1,20 +1,20 @@
-import { renderSobre } from './paginas/sobre.js';
+
 import { renderLivros } from './paginas/livros.js';
 import { renderShop } from './paginas/shop.js';
-import { renderBlog } from './paginas/blog.js';
 import { renderLogin } from './paginas/login.js';
 import { renderRegister } from './paginas/register.js';
 import { renderMinhaArea } from './paginas/minhaArea.js';
 import { updateActiveLink, updateNavbar } from './componentes/navbar.js'; 
-
+import { renderAdmin } from './paginas/admin.js';
+import { renderLogout } from './paginas/logout.js';
 const pages = {
-    sobreMim: renderSobre,
     livros: renderLivros,
     shop: renderShop,
-    blog: renderBlog,
     login: renderLogin,
     register: renderRegister,
-    minhaArea: renderMinhaArea
+    minhaArea: renderMinhaArea,
+    admin: renderAdmin,
+    logout: renderLogout 
 };
 
 export function renderContent(page) {

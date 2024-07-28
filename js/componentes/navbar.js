@@ -1,25 +1,31 @@
 import { renderContent } from '../router.js';
 import { initializeSidebar } from './sidebar.js';
-
+import { renderCart } from '../componentes/cart.js';
 export function initializeNavbar() {
     initializeSidebar();
     const sidebar = document.getElementById('sidebar');
+    const token = localStorage.getItem('token')
+    let isAdmin;
+    let email = 'Visitante';
+    if(token){
+        const payload = JSON.parse(atob(token.split('.')[1]));
+        isAdmin = payload.data.role === 'admin';
+        email = payload.data.email;
+    }
     
     const navLinks = `
-        <li><a href="#sobreMim">Sobre Mim</a></li>
-        <li><a href="#livros" class="active">Minha livraria</a></li>
-        <li><a href="#blog">Blog</a></li>
-        <li><a href="#shop">Shop</a></li>
+        <li><a href="#livros" class="active">Amazon</a></li>
+        <li><a href="#shop">Livros</a></li>
+        ${isAdmin ? '<li><a href="#admin">Admin</a></li>' : ''}
         ${isAuthenticated() ? '<li><a href="#minhaArea">Minha Área</a></li><li><a href="#" id="logout-btn">Logout</a></li>' : '<li><a href="#login">Login</a></li><li><a href="#register">Registrar</a></li>'}
     `;
 
     sidebar.innerHTML = `
         <div class="continue-reading">
             <div class="book-info">
-                <p>Faustino, R.</p>
+                <p>${email}</p>
             </div>
             <div class="user">
-                <img src="img/eu.jpg" alt="User" width="50px">
             </div>
         </div>
         <nav>
@@ -44,6 +50,7 @@ export function initializeNavbar() {
     });
 
     updateActiveLink(window.location.hash.substring(1) || 'shop');
+    renderCart()
 }
 
 export function updateNavbar() {
@@ -52,8 +59,10 @@ export function updateNavbar() {
     initializeNavbar();
 }
 
-function logout() {
+export function logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('mail');
     updateNavbar();
 }
 

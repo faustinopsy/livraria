@@ -3,45 +3,44 @@ namespace src\controllers;
 
 use src\models\User;
 use Firebase\JWT\JWT;
+use Firebase\JWT\Key;
 
 class AuthController {
     private $db;
+    private $userModel;
 
     public function __construct($db) {
         $this->db = $db;
+        $this->userModel = new User($db);
     }
 
     public function register($data) {
-        $user = new User($this->db);
-        $user->name = $data['name'];
-        $user->email = $data['email'];
-        $user->password = $data['password'];
-
-        if($user->create()) {
-            return ["message" => "User registered successfully"];
+        $data['role'] = 'user'; 
+        if ($this->userModel->create($data)) {
+            return ['message' => 'Registrado com sucesso'];
         }
-
-        return ["message" => "User registration failed"];
+        return ['message' => 'Falha ao registrar'];
     }
 
     public function login($data,$dados) {
-        $user = new User($this->db);
-        $user->email = $data['email'];
-        $user->password = $data['password'];
-
-        if($user->login()) {
+        $user = $this->userModel->findByEmail($data['email']);
+        if ($user && password_verify($data['password'], $user['password'])) {
             $payload = [
-                'iss' => "example.com",
+                'iss' => 'http://localhost:8000',
+                'aud' => 'http://localhost:8000',
                 'iat' => time(),
-                'exp' => time() + (60 * 60)* 24,
-                'sub' => $user->id
+                'nbf' => time(),
+                'exp' => time() + 3600,
+                'data' => [
+                    'userId' => $user['id'],
+                    'email' => $user['name'],
+                    'role' => $user['role']
+                ]
             ];
-
-            $token = JWT::encode($payload, $dados['JWT_SECRET'],'HS256');
-
-            return ["token" => $token];
+            $jwt = JWT::encode($payload, $dados['JWT_SECRET'], 'HS256');
+            return ['token' => $jwt];
         }
-
-        return ["message" => "Login failed"];
+        return ['message' => 'Login failed'];
     }
 }
+?>

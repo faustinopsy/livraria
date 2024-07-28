@@ -58,7 +58,7 @@ export function renderCart() {
     checkoutButton.textContent = 'Checkout';
     checkoutButton.classList.add('checkout-button');
     checkoutButton.addEventListener('click', () => {
-        fetch('http://localhost:8000/src/paypal/create-payment', {
+        fetch('http://localhost:8000/src/checkout', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -68,8 +68,9 @@ export function renderCart() {
         })
         .then(response => response.json())
         .then(data => {
-            if (data.approval_url) {
-                window.location.href = data.approval_url;
+            if (data.status) {
+                window.location.href = location.hash = '#minhaArea';
+                clearCart()
             } else {
                 alert('Erro ao iniciar o checkout.');
             }

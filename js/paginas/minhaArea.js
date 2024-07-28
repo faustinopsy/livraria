@@ -23,7 +23,7 @@ export function renderMinhaArea() {
                     <img src="${product.imageSrc}" alt="${product.altText}" class="product-image">
                     <h3>${product.name}</h3>
                     <p>${product.description}</p>
-                    <p>R$ ${product.price.toFixed(2)}</p>
+                    <p>R$ ${product.price}</p>
                 `;
                 productsContainer.appendChild(productCard);
             });

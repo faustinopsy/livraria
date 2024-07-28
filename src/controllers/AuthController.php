@@ -33,7 +33,7 @@ class AuthController {
             $payload = [
                 'iss' => "example.com",
                 'iat' => time(),
-                'exp' => time() + (60 * 60),
+                'exp' => time() + (60 * 60)* 24,
                 'sub' => $user->id
             ];
 

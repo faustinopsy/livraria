@@ -1,4 +1,6 @@
 <?php
+error_reporting(E_ALL & ~E_DEPRECATED);
+
 require '../vendor/autoload.php';
 
 use src\config\Database;
@@ -53,7 +55,7 @@ switch ($uri) {
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                 $jwt = $matches[1];
                 try {
-                    $decoded = JWT::decode($jwt, new Key($dados['JWT_SECRET'], ['HS256']));
+                    $decoded = JWT::decode($jwt, new Key($dados['JWT_SECRET'], 'HS256'));
                     $controller = new ProductController($db);
                     $response = $controller->getPurchasedProducts($decoded->sub);
                     echo json_encode($response);
@@ -75,7 +77,7 @@ switch ($uri) {
                 try {
                     $decoded = JWT::decode($jwt, new Key($dados['JWT_SECRET'], 'HS256'));
                     $data = json_decode(file_get_contents("php://input"), true);
-                    $controller = new CheckoutController($db,$dados);
+                    $controller = new CheckoutController($db);
                     $response = $controller->processCheckout($decoded->sub, $data);
                     echo json_encode($response);
                 } catch (Exception $e) {

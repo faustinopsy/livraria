@@ -42,13 +42,19 @@ switch ($uri) {
             echo json_encode($response);
         }
         break;
-    case '/src/products':
-        if ($method == 'GET') {
-            $controller = new ProductController($db);
-            $response = $controller->getProducts();
-            echo json_encode($response);
-        }
-        break;
+        case '/src/products':
+            if ($method == 'GET') {
+                try {
+                    $searchTerm = $_GET['search'] ?? '';
+                    $controller = new ProductController($db);
+                    $response = $controller->getProducts($searchTerm);
+                    echo json_encode($response);
+                } catch (Exception $e) {
+                    echo json_encode(["message" => "Nenhum resultado encontrado"]);
+                    http_response_code(204);
+                }
+            }
+            break;
     case '/src/purchased-products':
         if ($method == 'GET') {
             $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';

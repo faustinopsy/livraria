@@ -10,9 +10,9 @@ class ProductController {
         $this->db = $db;
     }
 
-    public function getProducts() {
+    public function getProducts($termo) {
         $product = new Product($this->db);
-        return $product->getAll();
+        return $product->getAll($termo);
     }
 
     public function getPurchasedProducts($userId) {

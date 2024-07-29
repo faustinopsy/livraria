@@ -25,7 +25,7 @@ document.addEventListener('visibilitychange', () => {
 
 window.addEventListener('resize', () => {
     if (window.outerWidth - window.innerWidth > 100 || window.outerHeight - window.innerHeight > 100) {
-        window.location.href = '#logout';
+        //window.location.href = '#logout';
         console.log('DevTools detectado!');
     }
 

@@ -11,6 +11,22 @@ use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
 use src\controllers\AdminController;
 
+define('API_KEY', 'godNotExist');
+
+function isAuthorized() {
+    $headers = getallheaders();
+    try {
+        if (isset($headers['X-API-KEY']) && $headers['X-API-KEY'] === API_KEY) {
+            return true;
+        } else {
+            throw new Exception("Invalid API Key");
+        }
+    } catch (Exception $e) {
+        echo json_encode(["message" => "Acesso negado"]);
+        http_response_code(401);
+        exit();
+    }
+}
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
@@ -42,6 +58,7 @@ switch ($uri) {
         }
         break;
         case '/livraria/src/index.php/products':
+            isAuthorized();
             if ($method == 'GET') {
                 try {
                     $searchTerm = $_GET['search'] ?? '';

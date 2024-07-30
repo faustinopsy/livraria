@@ -9,7 +9,7 @@ export function renderSales(page = 1, startDate = '', endDate = '') {
         <input type="date" id="start-date" name="start-date" value="${startDate}">
         <label for="end-date">Data de Fim:</label>
         <input type="date" id="end-date" name="end-date" value="${endDate}">
-        <button type="submit">Buscar</button>
+        <button type="submit" id='btncancelar'>Buscar</button>
     `;
     adminContent.appendChild(searchForm);
 

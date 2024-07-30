@@ -55,15 +55,17 @@ switch ($uri) {
                 }
             }
             elseif ($method == 'POST') {
-                    $data = $_POST;
+                    $data = json_decode(file_get_contents("php://input"), true);
                     $controller = new ProductController($db);
-                    if (isset($data['id']) && !empty($data['id'])) {
-                        $id = $data['id'];
-                        $response = $controller->update($id, $data);
-                    } else {
-                        $response = $controller->create($data);
-                    }
+                    $response = $controller->create($data);
                     echo json_encode($response);
+            }
+            elseif ($method == 'PUT') {
+                $data = json_decode(file_get_contents("php://input"), true);
+                $id=$data["id"];
+                $controller = new ProductController($db);
+                $response = $controller->update($id, $data);
+                echo json_encode($response);
             } elseif ($method == 'DELETE') {
                 $data = json_decode(file_get_contents("php://input"), true);
                 $id=$data["id"];

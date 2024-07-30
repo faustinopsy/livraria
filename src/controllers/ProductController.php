@@ -23,32 +23,31 @@ class ProductController {
         return $product->getPurchasedByUser($userId);
     }
     public function create($data) {
-        if (isset($_FILES['imageFile']) && $_FILES['imageFile']['error'] == 0) {
-            $uploadDir = __DIR__ . '/../../img/';
-            $uploadFile = $uploadDir . basename($_FILES['imageFile']['name']);
-            if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $uploadFile)) {
-                $data['imageSrc'] = 'img/' . basename($_FILES['imageFile']['name']);
-            } else {
-                throw new Exception("Failed to upload image");
-            }
-        }
-        return $this->product->create($data);
+        return $this->product->create($this->converteImagem($data));
     }
 
     public function update($id, $data) {
-        if (isset($_FILES['imageFile']) && $_FILES['imageFile']['error'] == 0) {
-            $uploadDir = __DIR__ . '/../../img/';
-            $uploadFile = $uploadDir . basename($_FILES['imageFile']['name']);
-            if (move_uploaded_file($_FILES['imageFile']['tmp_name'], $uploadFile)) {
-                $data['imageSrc'] = 'img/' . basename($_FILES['imageFile']['name']);
-            } else {
-                throw new Exception("Failed to upload image");
-            }
-        }
-        return $this->product->update($id, $data);
+        $dados = $this->converteImagem($data);
+        return $this->product->update($id, $dados);
     }
 
     public function delete($id) {
         return $this->product->delete($id);
+    }
+
+    private function converteImagem($data){
+        if (isset($data['imageSrcBase64'])) {
+            $imageData = base64_decode($data['imageSrcBase64']);
+            $uploadDir = __DIR__ . '/../../img/';
+            $fileName = uniqid() . '.jpg';
+            $uploadFile = $uploadDir . $fileName;
+            
+            if (file_put_contents($uploadFile, $imageData)) {
+                $data['imageSrc'] = 'img/' . $fileName;
+            } else {
+                throw new Exception("Failed to upload image");
+            }
+        }
+        return $data;
     }
 }

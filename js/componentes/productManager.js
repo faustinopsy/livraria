@@ -20,8 +20,8 @@ export function renderProductManager() {
                 <input type="text" id="altText" required>
                 <label for="category">Categoria:</label>
                 <input type="text" id="category" required>
-                <button type="submit" class="btn">Salvar</button>
-                <button type="button" id="cancel" class="btn">Cancelar</button>
+                <button type="submit" class="btn" id="btnsalvar">Salvar</button>
+                <button type="button" id="btncancelar" class="btn">Cancelar</button>
             </form>
         </div>
         <div id="product-list"></div>
@@ -31,7 +31,7 @@ export function renderProductManager() {
     const productList = document.getElementById('product-list');
     const productFormElement = document.getElementById('productForm');
     const addProductButton = document.getElementById('add-product');
-    const cancelButton = document.getElementById('cancel');
+    const cancelButton = document.getElementById('btncancelar');
 
     addProductButton.addEventListener('click', () => {
         productForm.style.display = 'block';
@@ -45,7 +45,6 @@ export function renderProductManager() {
 
     productFormElement.addEventListener('submit', (event) => {
         event.preventDefault();
-        const formData = new FormData(productFormElement);
         const productId = document.getElementById('productId').value;
         const name = document.getElementById('name').value;
         const description = document.getElementById('description').value;
@@ -54,12 +53,6 @@ export function renderProductManager() {
         const altText = document.getElementById('altText').value;
         const category = document.getElementById('category').value;
         
-        formData.append("name", name);
-        formData.append("description", description);
-        formData.append("price", price);
-        formData.append("imageFile", imageSrc.files[0]);
-        formData.append("altText", altText);
-        formData.append("category", category);
         const product = {
             id: productId,
             name,
@@ -70,10 +63,9 @@ export function renderProductManager() {
             category
         };
         if (productId) {
-            formData.append("id", productId);
-            updateProduct(formData);
+            updateProduct(product);
         } else {
-            addProduct(formData);
+            addProduct(product);
         }
     });
 
@@ -134,13 +126,19 @@ export function renderProductManager() {
         .catch(error => console.error('Error loading products:', error));
     }
 
-    function addProduct(formData) {
+    async function addProduct(product) {
+        const fileInput = document.getElementById('imageFile');
+    if (fileInput.files.length > 0) {
+        const file = fileInput.files[0];
+        product.imageSrcBase64 = await toBase64(file);
+    }
         fetch(`${config.baseURL}src/products`, {
             method: 'POST',
             headers: {
+                'Content-Type': 'application/json',
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },
-            body: formData
+            body: JSON.stringify(product)
         })
         .then(response => response.json())
         .then(data => {
@@ -150,15 +148,20 @@ export function renderProductManager() {
         })
         .catch(error => console.error('Error adding product:', error));
     }
-
-    function updateProduct(formData) {
-        fetch(`${config.baseURL}src/products`, {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: formData
-        })
+    async function updateProduct(product) {
+        const fileInput = document.getElementById('imageFile');
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            product.imageSrcBase64 = await toBase64(file);
+        }
+            fetch(`${config.baseURL}src/products`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                },
+                body: JSON.stringify(product)
+            })
         .then(response => response.json())
         .then(data => {
             alert('Produto atualizado com sucesso!');
@@ -183,5 +186,13 @@ export function renderProductManager() {
             fetchProducts();
         })
         .catch(error => console.error('Error deleting product:', error));
+    }
+
+    function toBase64(file) {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve(reader.result.split(',')[1]);            reader.onerror = error => reject(error);
+        });
     }
 }

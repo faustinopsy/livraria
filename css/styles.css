@@ -21,6 +21,12 @@ p{
     color: #e6b393;
     font-weight: 700;
 }
+input{
+    height: 40px;
+}
+textarea{
+    height: 100px;
+}
 .sidebar .logo {
     font-size: 24px;
     font-weight: bold;
@@ -270,7 +276,7 @@ img:hover{
     height: 250px;
     overflow-y: scroll;
 }
-.add-to-cart {
+.add-to-cart, btn ,#add-product, #btnsalvar{
     background-color: #28a745;
     color: white;
     border: none;
@@ -278,7 +284,22 @@ img:hover{
     border-radius: 5px;
     cursor: pointer;
 }
-
+.edit-product{
+    background-color: #e0bf06;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.delete-product, #btncancelar{
+    background-color: #f24910;
+    color: white;
+    border: none;
+    padding: 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
 .add-to-cart:hover {
     background-color: #218838;
 }

@@ -19,9 +19,16 @@ class Product {
         $this->conn = $db;
     }
 
-    public function getAll() {
+    public function getAll($termo='php') {
         $query = "SELECT * FROM " . $this->table;
+        if ($termo) {
+            $query .= " WHERE name LIKE :searchTerm";
+        }
         $stmt = $this->conn->prepare($query);
+        if ($termo) {
+            $termo = '%' . $termo . '%';
+            $stmt->bindParam(':searchTerm', $termo);
+        }
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }

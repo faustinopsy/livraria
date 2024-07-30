@@ -260,7 +260,7 @@ img:hover{
 .product-card {
     display: flex;
     flex-direction: column;
-    border: 1px solid #ccc;
+    border: 2px dashed#df7f43;
     padding: 10px;
     border-radius: 5px;
     width: 200px;
@@ -277,7 +277,7 @@ img:hover{
     overflow-y: scroll;
 }
 .add-to-cart, btn ,#add-product, #btnsalvar{
-    background-color: #28a745;
+    background-color: #df7f43;
     color: white;
     border: none;
     padding: 10px;
@@ -293,7 +293,7 @@ img:hover{
     cursor: pointer;
 }
 .delete-product, #btncancelar{
-    background-color: #f24910;
+    background-color: #995930;
     color: white;
     border: none;
     padding: 10px;

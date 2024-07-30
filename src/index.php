@@ -13,13 +13,13 @@ use src\controllers\AdminController;
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
-header("Access-Control-Allow-Methods: POST, GET, OPTIONS");
+header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
 $segredojwt = $dotenv->load();
 
-$database = new Database($segredojwt);
+$database = Database::getInstance($segredojwt);
 $db = $database->getConnection();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -53,6 +53,25 @@ switch ($uri) {
                     echo json_encode(["message" => "Nenhum resultado encontrado"]);
                     http_response_code(204);
                 }
+            }
+            elseif ($method == 'POST') {
+                    $data = $_POST;
+                    $controller = new ProductController($db);
+                    $response = $controller->create($data);
+                    echo json_encode($response);
+            }
+            elseif ($method == 'PUT') {
+                $data = $_POST;
+                $id=$data["id"];
+                $controller = new ProductController($db);
+                $response = $controller->update($id, $data);
+                echo json_encode($response);
+            } elseif ($method == 'DELETE') {
+                $data = json_decode(file_get_contents("php://input"), true);
+                $id=$data["id"];
+                $controller = new ProductController($db);
+                $response = $controller->delete($id);
+                echo json_encode($response);
             }
             break;
     case '/src/purchased-products':

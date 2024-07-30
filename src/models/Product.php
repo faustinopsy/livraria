@@ -19,16 +19,9 @@ class Product {
         $this->conn = $db;
     }
 
-    public function getAll($searchTerm = '') {
+    public function getAll() {
         $query = "SELECT * FROM " . $this->table;
-        if ($searchTerm) {
-            $query .= " WHERE name LIKE :searchTerm";
-        }
         $stmt = $this->conn->prepare($query);
-        if ($searchTerm) {
-            $searchTerm = '%' . $searchTerm . '%';
-            $stmt->bindParam(':searchTerm', $searchTerm);
-        }
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
@@ -52,23 +45,52 @@ class Product {
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    public function updateStatus($id, $status) {
-        $query = "UPDATE purchased_products SET status = :status, updated_at = :updated_at WHERE id = :id";
+    public function create($data) {
+        $query = "INSERT INTO " . $this->table . " (name, description, price, imageSrc, altText, category) VALUES (:name, :description, :price, :imageSrc, :altText, :category)";
         $stmt = $this->conn->prepare($query);
-        $stmt->bindParam(':status', $status);
-        $stmt->bindParam(':id', $id);
-    
-        $currentDateTime = date('Y-m-d H:i:s');
-        $stmt->bindParam(':updated_at', $currentDateTime);
-    
-        return $stmt->execute();
-    }
-    
 
-    public function removeReservation($id) {
-        $query = "DELETE FROM purchased_products WHERE id = :id";
+        $stmt->bindParam(':name', $data['name']);
+        $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':price', $data['price']);
+        $stmt->bindParam(':imageSrc', $data['imageSrc']);
+        $stmt->bindParam(':altText', $data['altText']);
+        $stmt->bindParam(':category', $data['category']);
+
+        if ($stmt->execute()) {
+            return ['message' => 'Product created successfully'];
+        } else {
+            return ['message' => 'Failed to create product'];
+        }
+    }
+
+    public function update($id, $data) {
+        $query = "UPDATE " . $this->table . " SET name = :name, description = :description, price = :price, imageSrc = :imageSrc, altText = :altText, category = :category WHERE id = :id";
+        $stmt = $this->conn->prepare($query);
+
+        $stmt->bindParam(':name', $data['name']);
+        $stmt->bindParam(':description', $data['description']);
+        $stmt->bindParam(':price', $data['price']);
+        $stmt->bindParam(':imageSrc', $data['imageSrc']);
+        $stmt->bindParam(':altText', $data['altText']);
+        $stmt->bindParam(':category', $data['category']);
+        $stmt->bindParam(':id', $id);
+
+        if ($stmt->execute()) {
+            return ['message' => 'Product updated successfully'];
+        } else {
+            return ['message' => 'Failed to update product'];
+        }
+    }
+
+    public function delete($id) {
+        $query = "DELETE FROM " . $this->table . " WHERE id = :id";
         $stmt = $this->conn->prepare($query);
         $stmt->bindParam(':id', $id);
-        return $stmt->execute();
+
+        if ($stmt->execute()) {
+            return ['message' => 'Product deleted successfully'];
+        } else {
+            return ['message' => 'Failed to delete product'];
+        }
     }
 }

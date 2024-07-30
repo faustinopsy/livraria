@@ -571,3 +571,12 @@ img:hover{
     border-radius: 5px;
     background-color: #f9f9f9;
 }
+#productForm{
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+#product-list{
+    display: flex;
+    flex-wrap: wrap;
+}

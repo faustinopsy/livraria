@@ -4,7 +4,7 @@ export function renderMinhaArea() {
     mainContent.innerHTML = '';
     mainContent.innerHTML = '<h1>Minha Área</h1><p>Seus produtos comprados:</p>';
 
-    fetch(`${config.baseURL}src/purchased-products`, {
+    fetch(`${config.baseURL}/purchased-products`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

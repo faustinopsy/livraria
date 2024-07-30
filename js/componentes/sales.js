@@ -20,7 +20,7 @@ export function renderSales(page = 1, startDate = '', endDate = '') {
         renderSales(1, startDateValue, endDateValue);
     });
 
-    fetch(`${config.baseURL}src/admin/sales?page=${page}&start_date=${startDate}&end_date=${endDate}`, {
+    fetch(`${config.baseURL}/admin/sales?page=${page}&start_date=${startDate}&end_date=${endDate}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',

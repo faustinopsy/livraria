@@ -59,7 +59,7 @@ export function renderCart() {
     checkoutButton.textContent = 'Checkout';
     checkoutButton.classList.add('checkout-button');
     checkoutButton.addEventListener('click', () => {
-        fetch(`${config.baseURL}src/checkout`, {
+        fetch(`${config.baseURL}/checkout`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

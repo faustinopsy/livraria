@@ -72,7 +72,7 @@ export function renderProductManager() {
     fetchProducts();
 
     function fetchProducts() {
-        fetch(`${config.baseURL}src/products`, {
+        fetch(`${config.baseURL}/products`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -132,7 +132,7 @@ export function renderProductManager() {
         const file = fileInput.files[0];
         product.imageSrcBase64 = await toBase64(file);
     }
-        fetch(`${config.baseURL}src/products`, {
+        fetch(`${config.baseURL}/products`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -154,7 +154,7 @@ export function renderProductManager() {
             const file = fileInput.files[0];
             product.imageSrcBase64 = await toBase64(file);
         }
-            fetch(`${config.baseURL}src/products`, {
+            fetch(`${config.baseURL}/products`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
@@ -172,7 +172,7 @@ export function renderProductManager() {
     }
 
     function deleteProduct(product) {
-        fetch(`${config.baseURL}src/products`, {
+        fetch(`${config.baseURL}/products`, {
             method: 'DELETE',
             headers: {
                 'Content-Type': 'application/json',

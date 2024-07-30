@@ -42,7 +42,7 @@ export function renderShop() {
 }
 
 function fetchProducts(procura='') {
-    fetch(`${config.baseURL}src/products?search=${procura}`, {
+    fetch(`${config.baseURL}/products?search=${procura}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json'

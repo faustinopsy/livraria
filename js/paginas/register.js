@@ -29,7 +29,7 @@ export function renderRegister() {
         const email = registerForm.email.value;
         const password = registerForm.password.value;
         
-        fetch(`${config.baseURL}src/auth/register`, {
+        fetch(`${config.baseURL}/auth/register`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

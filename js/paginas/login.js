@@ -24,7 +24,7 @@ export function renderLogin() {
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
 
-        fetch(`${config.baseURL}src/auth/login`, {
+        fetch(`${config.baseURL}/auth/login`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

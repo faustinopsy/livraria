@@ -14,9 +14,9 @@ use src\controllers\AdminController;
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-API-KEY");
 
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/');
 $segredojwt = $dotenv->load();
 
 $database = Database::getInstance($segredojwt);
@@ -24,9 +24,8 @@ $db = $database->getConnection();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
-
 switch ($uri) {
-    case '/src/auth/register':
+    case '/livraria/src/index.php/auth/register':
         if ($method == 'POST') {
             $data = json_decode(file_get_contents("php://input"), true);
             $controller = new AuthController($db);
@@ -34,7 +33,7 @@ switch ($uri) {
             echo json_encode($response);
         }
         break;
-    case '/src/auth/login':
+    case '/livraria/src/index.php/auth/login':
         if ($method == 'POST') {
             $data = json_decode(file_get_contents("php://input"), true);
             $controller = new AuthController($db);
@@ -42,7 +41,7 @@ switch ($uri) {
             echo json_encode($response);
         }
         break;
-        case '/src/products':
+        case '/livraria/src/index.php/products':
             if ($method == 'GET') {
                 try {
                     $searchTerm = $_GET['search'] ?? '';
@@ -74,7 +73,7 @@ switch ($uri) {
                 echo json_encode($response);
             }
             break;
-    case '/src/purchased-products':
+    case '/livraria/src/index.php/purchased-products':
         if ($method == 'GET') {
             $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -94,7 +93,7 @@ switch ($uri) {
             }
         }
         break;
-    case '/src/checkout':
+    case '/livraria/src/index.php/checkout':
         if ($method == 'POST') {
             $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -115,7 +114,7 @@ switch ($uri) {
             }
         }
         break;
-        case '/src/admin/reservations':
+        case '/livraria/src/index.php/admin/reservations':
             if ($method == 'GET') {
                 $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -140,7 +139,7 @@ switch ($uri) {
                 }
             }
             break;
-        case '/src/admin/update-status':
+        case '/livraria/src/index.php/admin/update-status':
             if ($method == 'POST') {
                 $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -166,7 +165,7 @@ switch ($uri) {
                 }
             }
             break;
-        case '/src/admin/remove-reservation':
+        case '/livraria/src/index.php/admin/remove-reservation':
             if ($method == 'POST') {
                 $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -192,7 +191,7 @@ switch ($uri) {
                 }
             }
             break;
-        case '/src/admin/sales':
+        case '/livraria/src/index.php/admin/sales':
             if ($method == 'GET') {
                 $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {

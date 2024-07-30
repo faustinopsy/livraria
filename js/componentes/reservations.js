@@ -2,7 +2,7 @@ import config from '../config.js';
 export function renderReservations() {
     const adminContent = document.getElementById('admin-content');
     adminContent.innerHTML = '<h2>Reservations</h2>';
-    fetch(`${config.baseURL}src/admin/reservations`, {
+    fetch(`${config.baseURL}/admin/reservations`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -50,7 +50,7 @@ export function renderReservations() {
 }
 
 function updateReservationStatus(id, status) {
-    fetch(`${config.baseURL}src/admin/update-status`, {
+    fetch(`${config.baseURL}/admin/update-status`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -67,7 +67,7 @@ function updateReservationStatus(id, status) {
 }
 
 function removeReservation(id) {
-    fetch(`${config.baseURL}src/admin/remove-reservation`, {
+    fetch(`${config.baseURL}/admin/remove-reservation`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

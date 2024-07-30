@@ -57,15 +57,13 @@ switch ($uri) {
             elseif ($method == 'POST') {
                     $data = $_POST;
                     $controller = new ProductController($db);
-                    $response = $controller->create($data);
+                    if (isset($data['id']) && !empty($data['id'])) {
+                        $id = $data['id'];
+                        $response = $controller->update($id, $data);
+                    } else {
+                        $response = $controller->create($data);
+                    }
                     echo json_encode($response);
-            }
-            elseif ($method == 'PUT') {
-                $data = $_POST;
-                $id=$data["id"];
-                $controller = new ProductController($db);
-                $response = $controller->update($id, $data);
-                echo json_encode($response);
             } elseif ($method == 'DELETE') {
                 $data = json_decode(file_get_contents("php://input"), true);
                 $id=$data["id"];

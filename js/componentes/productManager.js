@@ -53,7 +53,7 @@ export function renderProductManager() {
         const imageSrc = document.getElementById('imageFile');
         const altText = document.getElementById('altText').value;
         const category = document.getElementById('category').value;
-
+        
         formData.append("name", name);
         formData.append("description", description);
         formData.append("price", price);
@@ -69,8 +69,8 @@ export function renderProductManager() {
             altText,
             category
         };
-
         if (productId) {
+            formData.append("id", productId);
             updateProduct(formData);
         } else {
             addProduct(formData);
@@ -135,7 +135,6 @@ export function renderProductManager() {
     }
 
     function addProduct(formData) {
-        console.log(formData)
         fetch(`${config.baseURL}src/products`, {
             method: 'POST',
             headers: {
@@ -152,10 +151,9 @@ export function renderProductManager() {
         .catch(error => console.error('Error adding product:', error));
     }
 
-    function updateProduct(product) {
-        console.log(product)
+    function updateProduct(formData) {
         fetch(`${config.baseURL}src/products`, {
-            method: 'PUT',
+            method: 'POST',
             headers: {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             },

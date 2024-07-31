@@ -19,12 +19,18 @@ export function renderProductManager() {
                 <label for="altText">Texto Alternativo:</label>
                 <input type="text" id="altText" required>
                 <label for="category">Categoria:</label>
-                <input type="text" id="category" required>
+                <input list="categorias" id="category" required>
                 <button type="submit" class="btn" id="btnsalvar">Salvar</button>
                 <button type="button" id="btncancelar" class="btn">Cancelar</button>
             </form>
         </div>
         <div id="product-list"></div>
+
+        <datalist id="categorias">
+            <option value="Tecnologia">
+            <option value="Esporte">
+            <option value="Ficção">
+        </datalist>
     `;
 
     const productForm = document.getElementById('product-form');

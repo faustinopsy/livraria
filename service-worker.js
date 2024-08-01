@@ -44,22 +44,58 @@ self.addEventListener('activate', event => {
     );
 });
 
-self.addEventListener('fetch', event => {
-    event.respondWith(
-        caches.match(event.request)
-            .then(response => {
-                const fetchPromise = fetch(event.request).then(networkResponse => {
-                    if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
-                        const responseToCache = networkResponse.clone();
-                        caches.open(CACHE_NAME).then(cache => {
-                            cache.put(event.request, responseToCache);
-                        });
-                    }
-                    return networkResponse;
-                });
+// self.addEventListener('fetch', event => {
+//     console.log('Fetch event for ', event.request.url);
+//     event.respondWith(
+//         caches.match(event.request)
+//             .then(response => {
+//                 console.log('Cache response for ', event.request.url, response);
+//                 const fetchPromise = fetch(event.request).then(networkResponse => {
+//                     console.log('Network response for ', event.request.url, networkResponse);
+//                     if (networkResponse && networkResponse.status === 200 && networkResponse.type === 'basic') {
+//                         const responseToCache = networkResponse.clone();
+//                         caches.open(CACHE_NAME).then(cache => {
+//                             cache.put(event.request, responseToCache);
+//                         });
+//                     }
+//                     return networkResponse;
+//                 });
 
-                return response || fetchPromise;
+//                 return response || fetchPromise;
+//             })
+//     );
+// });
+self.addEventListener('fetch', event => {
+    if (event.request.method === 'GET') {
+        event.respondWith(
+            caches.match(event.request).then(cachedResponse => {
+                if (cachedResponse) {
+                    console.log('Cache response for ', event.request.url);
+                    fetchAndUpdateCache(event.request);
+                    return cachedResponse;
+                }
+                return fetchAndUpdateCache(event.request);
+            }).catch(() => {
+                return caches.match('offline.html');
             })
-    );
+        );
+    } else {
+        event.respondWith(fetch(event.request));
+    }
 });
+
+async function fetchAndUpdateCache(request) {
+    return fetch(request).then(networkResponse => {
+        if (networkResponse && networkResponse.ok) {
+            return caches.open(CACHE_NAME).then(cache => {
+                cache.put(request, networkResponse.clone());
+                console.log('Network response for ', request.url);
+                return networkResponse;
+            });
+        }
+    }).catch(error => {
+        console.error('Network request failed for ', request.url, error);
+        throw error;
+    });
+}
 

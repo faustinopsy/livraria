@@ -11,7 +11,14 @@ export function renderMinhaArea() {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) { 
+            return response.json().then(errorData => {
+                throw new Error(errorData.message || 'Erro desconhecido');
+            });
+        }
+        return response.json();
+    })
     .then(products => {
         if (products.length === 0) {
             mainContent.innerHTML += '<p>Você ainda não comprou nenhum produto.</p>';

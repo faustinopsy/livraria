@@ -31,7 +31,14 @@ export function renderLogin() {
             },
             body: JSON.stringify({ email, password })
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) { 
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message || 'Erro desconhecido');
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.token) {
                 localStorage.setItem('token', data.token);

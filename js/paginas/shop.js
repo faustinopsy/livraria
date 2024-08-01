@@ -48,7 +48,14 @@ function fetchProducts(procura='') {
             'Content-Type': 'application/json'
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) { 
+            return response.json().then(errorData => {
+                throw new Error(errorData.message || 'Erro desconhecido');
+            });
+        }
+        return response.json();
+    })
     .then(products => {
         const categorias = {
             'Tecnologia': document.getElementById('prateleira-tecnologia'),

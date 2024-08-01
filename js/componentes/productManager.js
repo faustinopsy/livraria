@@ -85,7 +85,14 @@ export function renderProductManager() {
                 'Authorization': 'Bearer ' + localStorage.getItem('token')
             }
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) { 
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message || 'Erro desconhecido');
+                });
+            }
+            return response.json();
+        })
         .then(products => {
             productList.innerHTML = '';
             products.forEach(product => {

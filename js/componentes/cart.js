@@ -67,7 +67,14 @@ export function renderCart() {
             },
             body: JSON.stringify(cart)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) { 
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message || 'Erro desconhecido');
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.status) {
                 window.location.href = location.hash = '#minhaArea';

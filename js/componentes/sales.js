@@ -27,11 +27,17 @@ export function renderSales(page = 1, startDate = '', endDate = '') {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) { 
+            return response.json().then(errorData => {
+                throw new Error(errorData.message || 'Erro desconhecido');
+            });
+        }
+        return response.json();
+    })
     .then(data => {
         const salesContainer = document.createElement('div');
         salesContainer.classList.add('sales-container');
-
         data.sales.forEach(sale => {
             const saleCard = document.createElement('div');
             saleCard.classList.add('sale-card');

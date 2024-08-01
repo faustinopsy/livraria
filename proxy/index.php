@@ -1,11 +1,12 @@
 <?php
 
-$rateLimit = 10; // Número máximo de requisições permitidas
-$rateLimitTime = 10; // Janela de tempo em segundos
+$rateLimit = 100; // Número máximo de requisições permitidas
+$rateLimitTime = 60 * 2; // Janela de tempo em segundos
 $penaltyTime = 300; // Tempo de penalidade em segundos (por exemplo, 5 minutos)
 
 $clientIp = $_SERVER['REMOTE_ADDR'];
-
+$requestCount=0;
+$blockedUntil=0;
 // Função para sanitizar o endereço IP para uso como nome de arquivo
 function sanitizeIp($ip) {
     // Substitui dois-pontos e outros caracteres por sublinhados
@@ -36,10 +37,10 @@ function getRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime) {
     }
     return [$requestCount, 0];
 }
-
+list($requestCount, $blockedUntil) = getRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime);
 // Função para incrementar o contador de requisições
 function incrementRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime) {
-    list($requestCount, $blockedUntil) = getRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime);
+    
     if ($requestCount === -1) {
         // IP está bloqueado
         return;
@@ -50,8 +51,7 @@ function incrementRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime) {
     file_put_contents($rateLimitFile, $requestTime . ':' . ($requestCount + 1) . ':' . $newBlockedUntil);
 }
 
-// Verificar a limitação de taxa
-list($requestCount, $blockedUntil) = getRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime);
+
 if ($requestCount === -1) {
     http_response_code(429); // Muitas requisições
     echo json_encode(["message" => "temporariamente bloqueado. Tente novamente em " . ($blockedUntil - time()) . " segundos."]);
@@ -64,8 +64,7 @@ if ($requestCount >= $rateLimit) {
     exit();
 }
 
-// Incrementar o contador de requisições
-incrementRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime);
+
 
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
@@ -74,9 +73,11 @@ header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
+    //incrementRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime); 
     exit();
 }
-
+// $details = json_decode(file_get_contents("http://ip-api.com/json/{$clientIp}"));
+// var_dump($details);exit;
 $apiBaseUrl = 'http://localhost/livraria/src/index.php';
 $apiKey = 'godNotExist';
 
@@ -115,7 +116,7 @@ curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 curl_setopt($ch, CURLOPT_HTTPHEADER, [
     'Content-Type: application/json',
     'X-API-KEY: ' . $apiKey,
-    'Authorization: ' . ($_SERVER['HTTP_AUTHORIZATION'] ?? '')
+    'X-Authorization: ' . ($_SERVER['HTTP_AUTHORIZATION'] ?? '')
 ]);
 
 switch ($_SERVER['REQUEST_METHOD']) {
@@ -148,4 +149,5 @@ if ($response === false) {
 http_response_code(200);
 header('Content-Type: application/json');
 echo $response;
+exit;
 ?>

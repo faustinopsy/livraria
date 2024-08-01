@@ -9,7 +9,14 @@ export function renderReservations() {
             'Authorization': 'Bearer ' + localStorage.getItem('token')
         }
     })
-    .then(response => response.json())
+    .then(response => {
+        if (!response.ok) { 
+            return response.json().then(errorData => {
+                throw new Error(errorData.message || 'Erro desconhecido');
+            });
+        }
+        return response.json();
+    })
     .then(reservations => {
         const reservationsContainer = document.createElement('div');
         reservationsContainer.classList.add('reservations-container');

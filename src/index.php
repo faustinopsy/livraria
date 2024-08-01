@@ -30,7 +30,7 @@ function isAuthorized() {
 header("Access-Control-Allow-Origin: *");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
-header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-API-KEY");
+header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-API-KEY, HTTP_X_AUTHORIZATION");
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/');
 $segredojwt = $dotenv->load();
@@ -92,7 +92,7 @@ switch ($uri) {
             break;
     case '/livraria/src/index.php/purchased-products':
         if ($method == 'GET') {
-            $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+            $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                 $jwt = $matches[1];
                 try {
@@ -112,7 +112,7 @@ switch ($uri) {
         break;
     case '/livraria/src/index.php/checkout':
         if ($method == 'POST') {
-            $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+            $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                 $jwt = $matches[1];
                 try {
@@ -133,7 +133,7 @@ switch ($uri) {
         break;
         case '/livraria/src/index.php/admin/reservations':
             if ($method == 'GET') {
-                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                     $jwt = $matches[1];
                     try {
@@ -158,7 +158,7 @@ switch ($uri) {
             break;
         case '/livraria/src/index.php/admin/update-status':
             if ($method == 'POST') {
-                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                     $jwt = $matches[1];
                     try {
@@ -184,7 +184,7 @@ switch ($uri) {
             break;
         case '/livraria/src/index.php/admin/remove-reservation':
             if ($method == 'POST') {
-                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                     $jwt = $matches[1];
                     try {
@@ -210,7 +210,7 @@ switch ($uri) {
             break;
         case '/livraria/src/index.php/admin/sales':
             if ($method == 'GET') {
-                $authHeader = $_SERVER['HTTP_AUTHORIZATION'] ?? '';
+                $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                     $jwt = $matches[1];
                     try {

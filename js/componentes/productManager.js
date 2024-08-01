@@ -141,32 +141,48 @@ export function renderProductManager() {
 
     async function addProduct(product) {
         const fileInput = document.getElementById('imageFile');
-    if (fileInput.files.length > 0) {
-        const file = fileInput.files[0];
-        product.imageSrcBase64 = await toBase64(file);
+        if (fileInput.files.length > 0) {
+            const file = fileInput.files[0];
+            product.imageSrcBase64 = await toBase64(file);
+        }
+    
+        if (navigator.onLine) {
+            fetch(`${config.baseURL}/products`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + localStorage.getItem('token')
+                },
+                body: JSON.stringify(product)
+            })
+            .then(response => {
+                if (!response.ok) { 
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Erro desconhecido');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Produto adicionado com sucesso!');
+                productForm.style.display = 'none';
+                fetchProducts();
+            })
+            .catch(error => console.error('Error adding product:', error));
+        } else {
+            saveProductOffline(product, 'add');
+            alert('Sem conexão com a internet. Produto salvo localmente e será enviado quando a conexão for restabelecida.');
+        }
     }
-        fetch(`${config.baseURL}/products`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-            },
-            body: JSON.stringify(product)
-        })
-        .then(response => response.json())
-        .then(data => {
-            alert('Produto adicionado com sucesso!');
-            productForm.style.display = 'none';
-            fetchProducts();
-        })
-        .catch(error => console.error('Error adding product:', error));
-    }
+    
     async function updateProduct(product) {
         const fileInput = document.getElementById('imageFile');
         if (fileInput.files.length > 0) {
             const file = fileInput.files[0];
             product.imageSrcBase64 = await toBase64(file);
         }
+    
+        if (navigator.onLine) {
             fetch(`${config.baseURL}/products`, {
                 method: 'PUT',
                 headers: {
@@ -175,13 +191,30 @@ export function renderProductManager() {
                 },
                 body: JSON.stringify(product)
             })
-        .then(response => response.json())
-        .then(data => {
-            alert('Produto atualizado com sucesso!');
-            productForm.style.display = 'none';
-            fetchProducts();
-        })
-        .catch(error => console.error('Error updating product:', error));
+            .then(response => {
+                if (!response.ok) { 
+                    return response.json().then(errorData => {
+                        throw new Error(errorData.message || 'Erro desconhecido');
+                    });
+                }
+                return response.json();
+            })
+            .then(data => {
+                alert('Produto atualizado com sucesso!');
+                productForm.style.display = 'none';
+                fetchProducts();
+            })
+            .catch(error => console.error('Error updating product:', error));
+        } else {
+            saveProductOffline(product, 'update');
+            alert('Sem conexão com a internet. Produto salvo localmente e será atualizado quando a conexão for restabelecida.');
+        }
+    }
+    
+    function saveProductOffline(product, action) {
+        let offlineProducts = JSON.parse(localStorage.getItem('offlineProducts')) || [];
+        offlineProducts.push({ product, action });
+        localStorage.setItem('offlineProducts', JSON.stringify(offlineProducts));
     }
 
     function deleteProduct(product) {
@@ -193,19 +226,67 @@ export function renderProductManager() {
             },
             body: JSON.stringify(product)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) { 
+                return response.json().then(errorData => {
+                    throw new Error(errorData.message || 'Erro desconhecido');
+                });
+            }
+            return response.json();
+        })
         .then(data => {
             alert('Produto excluído com sucesso!');
             fetchProducts();
         })
         .catch(error => console.error('Error deleting product:', error));
+    
     }
 
     function toBase64(file) {
         return new Promise((resolve, reject) => {
             const reader = new FileReader();
             reader.readAsDataURL(file);
-            reader.onload = () => resolve(reader.result.split(',')[1]);            reader.onerror = error => reject(error);
+            reader.onload = () => resolve(reader.result.split(',')[1]);      
+            reader.onerror = error => reject(error);
         });
+    }
+}
+export function syncOfflineProducts() {
+    if (navigator.onLine) {
+        let offlineProducts = JSON.parse(localStorage.getItem('offlineProducts')) || [];
+        offlineProducts.forEach(({ product, action }) => {
+            if (action === 'add') {
+                fetch(`${config.baseURL}/products`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    body: JSON.stringify(product)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Produto sincronizado:', data);
+                    fetchProducts(); 
+                })
+                .catch(error => console.error('Error syncing product:', error));
+            } else if (action === 'update') {
+                fetch(`${config.baseURL}/products`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': 'Bearer ' + localStorage.getItem('token')
+                    },
+                    body: JSON.stringify(product)
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log('Produto atualizado sincronizado:', data);
+                    fetchProducts(); 
+                })
+                .catch(error => console.error('Error syncing product:', error));
+            }
+        });
+        localStorage.removeItem('offlineProducts'); 
     }
 }

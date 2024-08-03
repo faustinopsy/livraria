@@ -1,4 +1,4 @@
-import { renderBooks } from '../componentes/books.js';
+import { renderBooks } from '../books.js';
 
 export function renderLivros() {
     const mainContent = document.getElementById('main-content');

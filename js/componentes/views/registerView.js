@@ -1,5 +1,4 @@
-import config from '../config.js';
-import { updateNavbar } from '../componentes/navbar.js';
+import { registerUser } from '../controllers/authController.js';
 
 export function renderRegister() {
     const mainContent = document.getElementById('main-content');
@@ -28,31 +27,6 @@ export function renderRegister() {
         const name = registerForm.name.value;
         const email = registerForm.email.value;
         const password = registerForm.password.value;
-        
-        fetch(`${config.baseURL}/auth/register`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ name, email, password })
-        })
-        .then(response => {
-            if (!response.ok) { 
-                return response.json().then(errorData => {
-                    throw new Error(errorData.message || 'Erro desconhecido');
-                });
-            }
-            return response.json();
-        })
-        .then(data => {
-            if (data.message === 'Registrado com sucesso') {
-                alert('Registro bem-sucedido');
-                window.location.hash = '#login';
-                updateNavbar();
-            } else {
-                alert('Falha no registro: ' + data.message);
-            }
-        })
-        .catch(error => console.error('Error:', error));
+        registerUser(name, email, password);
     });
 }

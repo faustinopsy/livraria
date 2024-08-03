@@ -1,5 +1,5 @@
 import { initializeNavbar } from './componentes/navbar.js';
-import { renderContent } from './router.js';
+import { renderContent } from './componentes/utils/router.js';
 import { initializeSidebar } from './componentes/sidebar.js';
 import { syncOfflineProducts } from './componentes/productManager.js';
 document.addEventListener('DOMContentLoaded', () => {

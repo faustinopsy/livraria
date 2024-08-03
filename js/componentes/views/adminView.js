@@ -1,24 +1,7 @@
-import { renderReservations } from '../componentes/reservations.js';
-import { renderSales } from '../componentes/sales.js';
-import { renderProductManager } from '../componentes/productManager.js';
-
-export function renderAdmin() {
-    const token = localStorage.getItem('token');
-
-    if (token) {
-        try {
-            const payload = JSON.parse(atob(token.split('.')[1]));
-            const isAdmin = payload.data.role === 'admin';
-            if (!isAdmin) {
-                location.hash = '#shop';
-            }
-        } catch (error) {
-            console.error('Token parsing error:', error);
-        }
-    } else {
-        location.hash = '#login';
-    }
-   
+import { renderReservations } from '../controllers/reservationController.js';
+import { renderSales } from '../controllers/salesController.js';
+import { renderProductManager } from '../controllers/productController.js';
+export function renderAdminView() {
     const mainContent = document.getElementById('main-content');
     mainContent.innerHTML = `
         <h1>Admin Area</h1>

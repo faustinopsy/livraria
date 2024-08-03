@@ -1,4 +1,4 @@
-import { renderContent } from '../router.js';
+import { renderContent } from './utils/router.js';
 import { initializeSidebar } from './sidebar.js';
 import { renderCart } from '../componentes/cart.js';
 export function initializeNavbar() {

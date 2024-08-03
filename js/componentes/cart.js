@@ -1,4 +1,4 @@
-import config from '../config.js';
+import config from '../componentes/utils/config.js';
 let cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 export function addToCart(product) {

@@ -66,7 +66,8 @@ if ($requestCount >= $rateLimit) {
 
 
 
-header("Access-Control-Allow-Origin: *");
+
+header("Access-Control-Allow-Origin: http://localhost:5500");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: GET, POST, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With");
@@ -78,12 +79,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 // $details = json_decode(file_get_contents("http://ip-api.com/json/{$clientIp}"));
 // var_dump($details);exit;
-$apiBaseUrl = 'http://localhost/livraria/src/index.php';
+$apiBaseUrlAuth = 'http://localhost:1000/index.php';
+$apiBaseUrlProdutos = 'http://localhost:2000/index.php';
 $apiKey = 'godNotExist';
 
 $requestUri = $_SERVER['REQUEST_URI'];
 $parsedUrl = parse_url($requestUri);
 $path = $parsedUrl['path'];
+
 $lookupTable = [
     '/auth/register' => '/auth/register',
     '/auth/login' => '/auth/login',
@@ -97,10 +100,13 @@ $lookupTable = [
 ];
 
 $apiUrl = null;
-
 foreach ($lookupTable as $route => $mappedRoute) {
     if (preg_match("#^{$route}$#", $path)) {
-        $apiUrl = $apiBaseUrl . $mappedRoute;
+        if($path==='/auth/login' || $path==='/auth/register'){
+            $apiUrl = $apiBaseUrlAuth . $mappedRoute;
+            break;
+        }
+        $apiUrl = $apiBaseUrlProdutos . $mappedRoute;
         break;
     }
 }

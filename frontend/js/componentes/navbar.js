@@ -1,6 +1,6 @@
 import { renderContent } from './utils/router.js';
 import { initializeSidebar } from './sidebar.js';
-import { renderCart } from '../componentes/cart.js';
+import { renderCart } from './cart.js';
 export function initializeNavbar() {
     initializeSidebar();
     const sidebar = document.getElementById('sidebar');

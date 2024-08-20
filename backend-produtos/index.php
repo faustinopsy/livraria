@@ -1,10 +1,9 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED);
 
-require '../vendor/autoload.php';
+require 'vendor/autoload.php';
 
 use src\config\Database;
-use src\controllers\AuthController;
 use src\controllers\ProductController;
 use src\controllers\CheckoutController;
 use Firebase\JWT\JWT;
@@ -27,7 +26,8 @@ function isAuthorized() {
         exit();
     }
 }
-header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Credentials: true");
+header("Access-Control-Allow-Origin: http://localhost:8000");
 header("Content-Type: application/json; charset=UTF-8");
 header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-API-KEY, HTTP_X_AUTHORIZATION");
@@ -41,23 +41,7 @@ $db = $database->getConnection();
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
 $method = $_SERVER['REQUEST_METHOD'];
 switch ($uri) {
-    case '/livraria/src/index.php/auth/register':
-        if ($method == 'POST') {
-            $data = json_decode(file_get_contents("php://input"), true);
-            $controller = new AuthController($db);
-            $response = $controller->register($data);
-            echo json_encode($response);
-        }
-        break;
-    case '/livraria/src/index.php/auth/login':
-        if ($method == 'POST') {
-            $data = json_decode(file_get_contents("php://input"), true);
-            $controller = new AuthController($db);
-            $response = $controller->login($data,$segredojwt);
-            echo json_encode($response);
-        }
-        break;
-        case '/livraria/src/index.php/products':
+        case '/index.php/products':
             isAuthorized();
             if ($method == 'GET') {
                 try {
@@ -90,7 +74,7 @@ switch ($uri) {
                 echo json_encode($response);
             }
             break;
-    case '/livraria/src/index.php/purchased-products':
+    case '/index.php/purchased-products':
         if ($method == 'GET') {
             $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -110,7 +94,7 @@ switch ($uri) {
             }
         }
         break;
-    case '/livraria/src/index.php/checkout':
+    case '/index.php/checkout':
         if ($method == 'POST') {
             $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -131,7 +115,7 @@ switch ($uri) {
             }
         }
         break;
-        case '/livraria/src/index.php/admin/reservations':
+        case '/index.php/admin/reservations':
             if ($method == 'GET') {
                 $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -156,7 +140,7 @@ switch ($uri) {
                 }
             }
             break;
-        case '/livraria/src/index.php/admin/update-status':
+        case '/index.php/admin/update-status':
             if ($method == 'POST') {
                 $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -182,7 +166,7 @@ switch ($uri) {
                 }
             }
             break;
-        case '/livraria/src/index.php/admin/remove-reservation':
+        case '/index.php/admin/remove-reservation':
             if ($method == 'POST') {
                 $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
@@ -208,7 +192,7 @@ switch ($uri) {
                 }
             }
             break;
-        case '/livraria/src/index.php/admin/sales':
+        case '/index.php/admin/sales':
             if ($method == 'GET') {
                 $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {

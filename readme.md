@@ -31,7 +31,7 @@ A estrutura do projeto é dividida em três partes principais:
   - `/auth/register`
   - `/auth/login`
 
-### backend-produtos
+### backend-produtos (esse serviço pode ser dividio em dois)
 - Porta: `2000`
 - Base URL: `http://localhost:2000`
 - Gerencia o catálogo de produtos e operações relacionadas.

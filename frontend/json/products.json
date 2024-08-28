@@ -1,0 +1,29 @@
+[
+    {
+        "id": 1,
+        "name": "Curso de JavaScript",
+        "description": "Aprenda JavaScript do básico ao avançado.",
+        "price": 99.99,
+        "imageSrc": "img/js-course.jpg",
+        "altText": "Curso de JavaScript",
+        "category": "Tecnologia"
+    },
+    {
+        "id": 2,
+        "name": "Curso de Python",
+        "description": "Domine Python e suas bibliotecas.",
+        "price": 89.99,
+        "imageSrc": "img/python-course.jpg",
+        "altText": "Curso de Python",
+        "category": "Tecnologia"
+    },
+    {
+        "id": 3,
+        "name": "Curso de PHP",
+        "description": "Torne-se um desenvolvedor PHP.",
+        "price": 79.99,
+        "imageSrc": "img/php-course.jpg",
+        "altText": "Curso de PHP",
+        "category": "Tecnologia"
+    }
+]

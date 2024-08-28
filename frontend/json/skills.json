@@ -1,0 +1,34 @@
+ [
+    {
+      "name": "Frontend",
+      "text":"HTML5 e CSS3, JavaScript",
+      "percentage": 80,
+      "progressBarWidth": "80%"
+    },
+    {
+      "name": "Backend",
+      "text":"PHP, Python, Node",
+      "percentage": 70,
+      "progressBarWidth": "70%"
+    },
+    {
+      "name": "Banco de dados",
+      "text":"MySQL/MariaDB, PostgreSQL, SQLServer, SQLite",
+      "percentage": 90,
+      "progressBarWidth": "90%"
+    },
+    {
+      "name": "API",
+      "text":"REST e SOAP",
+      "percentage": 50,
+      "progressBarWidth": "50%"
+    }
+    ,
+    {
+      "name": "Frameworks",
+      "text":"Conhecimento em Laravel, CodeIgniter, Vuejs e React, e low-code full-Stack PHPmaker e scriptcase",
+      "percentage": 50,
+      "progressBarWidth": "50%"
+    }
+  ]
+

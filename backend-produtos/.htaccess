@@ -1,0 +1,17 @@
+# Proteger o arquivo .env
+<FilesMatch "^\.env">
+    Require all denied
+</FilesMatch>
+
+# Reescrever URLs para remover a extensão .php
+RewriteEngine On
+
+# Reescrever URLs que terminam com / para o arquivo .php correspondente
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)/$ $1.php [L]
+
+
+# Opcional: redirecionar URLs com extensão .php para a versão sem extensão
+RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\s([^.]+)\.php [NC]
+RewriteRule ^ %1 [R=301,L]

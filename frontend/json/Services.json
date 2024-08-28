@@ -1,0 +1,20 @@
+[
+    {
+        "title": "Software Engineering",
+        "description": "The most modern and high-quality design made at a professional level.",
+        "imageSrc": "./img/icon-design.svg",
+        "altText": "design icon"
+    },
+    {
+        "title": "Web Development",
+        "description": "High-quality development of sites at the professional level.",
+        "imageSrc": "./img/icon-dev.svg",
+        "altText": "Web development icon"
+    },
+    {
+        "title": "Mobile Apps",
+        "description": "Professional development of applications for Android.",
+        "imageSrc": "./img/icon-app.svg",
+        "altText": "mobile app icon"
+    }
+]

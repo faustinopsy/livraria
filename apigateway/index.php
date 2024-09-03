@@ -142,8 +142,7 @@ switch ($_SERVER['REQUEST_METHOD']) {
         break;
 }
 
-// curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-// curl_setopt($ch, CURLOPT_SSL_VERIFYHOST, false);
+
 $response = curl_exec($ch);
 
 if ($response === false) {

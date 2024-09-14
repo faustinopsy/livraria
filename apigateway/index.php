@@ -5,8 +5,7 @@ $rateLimitTime = 60 * 2; // Janela de tempo em segundos
 $penaltyTime = 300; // Tempo de penalidade em segundos (por exemplo, 5 minutos)
 
 $clientIp = $_SERVER['REMOTE_ADDR'];
-$requestCount=0;
-$blockedUntil=0;
+
 // Função para sanitizar o endereço IP para uso como nome de arquivo
 function sanitizeIp($ip) {
     // Substitui dois-pontos e outros caracteres por sublinhados
@@ -35,26 +34,27 @@ function getRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime) {
     if (time() - $requestTime > $rateLimitTime) {
         return [0, 0];
     }
-    return [$requestCount, 0];
+    return [$requestCount, $blockedUntil];
 }
+
 list($requestCount, $blockedUntil) = getRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime);
+
 // Função para incrementar o contador de requisições
-function incrementRequestCount($rateLimitFile, $rateLimitTime, $penaltyTime) {
-    
+function incrementRequestCount($rateLimitFile, $requestCount, $penaltyTime) {
     if ($requestCount === -1) {
         // IP está bloqueado
         return;
     }
 
     $requestTime = time();
-    $newBlockedUntil = ($requestCount + 1 >= $GLOBALS['rateLimit']) ? $requestTime + $penaltyTime : 0;
-    file_put_contents($rateLimitFile, $requestTime . ':' . ($requestCount + 1) . ':' . $newBlockedUntil);
+    $newRequestCount = $requestCount + 1;
+    $newBlockedUntil = ($newRequestCount >= $GLOBALS['rateLimit']) ? $requestTime + $penaltyTime : 0;
+    file_put_contents($rateLimitFile, $requestTime . ':' . $newRequestCount . ':' . $newBlockedUntil);
 }
-
 
 if ($requestCount === -1) {
     http_response_code(429); // Muitas requisições
-    echo json_encode(["message" => "temporariamente bloqueado. Tente novamente em " . ($blockedUntil - time()) . " segundos."]);
+    echo json_encode(["message" => "Temporariamente bloqueado. Tente novamente em " . ($blockedUntil - time()) . " segundos."]);
     exit();
 }
 
@@ -63,6 +63,11 @@ if ($requestCount >= $rateLimit) {
     echo json_encode(["message" => "Limite de requisições excedido. Tente novamente mais tarde."]);
     exit();
 }
+
+// Requisição permitida, incrementa o contador
+incrementRequestCount($rateLimitFile, $requestCount, $penaltyTime);
+
+// Continuação do processamento da requisição...
 
 
 

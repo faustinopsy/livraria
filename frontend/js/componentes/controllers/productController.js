@@ -4,13 +4,13 @@ import { renderProductForm, renderProductList, attachEventHandlers } from '../vi
 export function renderProductManager() {
     renderProductForm();
     loadProducts();
-    attachEventHandlers(addProduct, updateProduct, deleteProduct);
 }
 
 function loadProducts() {
     fetchProductsFromAPI()
         .then(products => {
             renderProductList(products);
+            attachEventHandlers(addProduct, updateProduct, deleteProduct, products);
         })
         .catch(error => console.error('Error loading products:', error));
 }

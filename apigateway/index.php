@@ -86,7 +86,7 @@ $apiKey = 'godNotExist';
 $requestUri = $_SERVER['REQUEST_URI'];
 $parsedUrl = parse_url($requestUri);
 $path = $parsedUrl['path'];
-
+$queryString = isset($parsedUrl['query']) ? '?' . $parsedUrl['query'] : '';
 $lookupTable = [
     '/auth/register' => '/auth/register',
     '/auth/login' => '/auth/login',
@@ -106,7 +106,7 @@ foreach ($lookupTable as $route => $mappedRoute) {
             $apiUrl = $apiBaseUrlAuth . $mappedRoute;
             break;
         }
-        $apiUrl = $apiBaseUrlProdutos . $mappedRoute;
+        $apiUrl = $apiBaseUrlProdutos . $mappedRoute. $queryString;
         break;
     }
 }

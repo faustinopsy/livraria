@@ -38,7 +38,7 @@ class ProductController {
     private function converteImagem($data){
         if (isset($data['imageSrcBase64'])) {
             $imageData = base64_decode($data['imageSrcBase64']);
-            $uploadDir = __DIR__ . '/../../img/';
+            $uploadDir = __DIR__ . '/../../frontend/img/';
             $fileName = uniqid() . '.jpg';
             $uploadFile = $uploadDir . $fileName;
             

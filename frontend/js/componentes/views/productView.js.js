@@ -51,7 +51,7 @@ export function renderProductList(products) {
     });
 }
 
-export function attachEventHandlers(onAddProduct, onUpdateProduct, onDeleteProduct) {
+export function attachEventHandlers(onAddProduct, onUpdateProduct, onDeleteProduct, products) {
     const productFormElement = document.getElementById('productForm');
     const addProductButton = document.getElementById('add-product');
     const cancelButton = document.getElementById('btncancelar');
@@ -95,9 +95,9 @@ export function attachEventHandlers(onAddProduct, onUpdateProduct, onDeleteProdu
 
     const editProductButtons = document.querySelectorAll('.edit-product');
     const deleteProductButtons = document.querySelectorAll('.delete-product');
-
     editProductButtons.forEach(button => {
         button.addEventListener('click', () => {
+            
             const productId = button.getAttribute('data-id');
             const product = products.find(p => p.id == productId);
             document.getElementById('productId').value = product.id;

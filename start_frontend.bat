@@ -1,3 +1,3 @@
 @echo off
-cd "C:\Apache24\htdocs\livraria\frontend"
+cd "frontend"
 php -S localhost:5500

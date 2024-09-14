@@ -1,17 +1,29 @@
 import config from '../utils/config.js';
 
 export async function fetchProducts(searchTerm = '') {
-    const response = await fetch(`${config.baseURL}/products?search=${searchTerm}`, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
+    try{
+        const response = await fetch(`${config.baseURL}/products?search=${searchTerm}`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
+        if (!response.ok) {
+            const errorData = await response.json();
+            if (response.status === 429) {
+                console.error('Limite de requisições excedido:', errorData.message);
+            } else {
+                throw new Error(errorData.message || 'Erro desconhecido');
+            }
         }
-    });
-    if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Erro desconhecido');
+        return response.json();
+    }catch (e){
+        if(e == 'TypeError: Failed to fetch'){
+            alert('Limite de requisições excedido:');
+        }
+           
     }
-    return response.json();
+    
 }
 export async function fetchPurchasedProducts() {
     const response = await fetch(`${config.baseURL}/purchased-products`, {

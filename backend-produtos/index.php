@@ -1,7 +1,7 @@
 <?php
 error_reporting(E_ALL & ~E_DEPRECATED);
 
-require 'vendor/autoload.php';
+require_once 'vendor/autoload.php';
 
 use src\config\Database;
 use src\controllers\ProductController;
@@ -33,9 +33,9 @@ header("Access-Control-Allow-Methods: POST, GET, PUT, DELETE, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With, X-API-KEY, HTTP_X_AUTHORIZATION");
 
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/');
-$segredojwt = $dotenv->load();
+$segredo = $dotenv->load();
 
-$database = Database::getInstance($segredojwt);
+$database = Database::getInstance($segredo);
 $db = $database->getConnection();
 
 $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
@@ -80,7 +80,7 @@ switch ($uri) {
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                 $jwt = $matches[1];
                 try {
-                    $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                    $decoded = JWT::decode($jwt, new Key($segredo['JWT_SECRET'], 'HS256'));
                     $controller = new ProductController($db);
                     $response = $controller->getPurchasedProducts($decoded->data->userId);
                     echo json_encode($response);
@@ -99,12 +99,17 @@ switch ($uri) {
             $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
             if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                 $jwt = $matches[1];
+               
                 try {
-                    $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                    $decoded = JWT::decode($jwt, new Key($segredo['JWT_SECRET'], 'HS256'));
                     $data = json_decode(file_get_contents("php://input"), true);
-                    $controller = new CheckoutController($db);
-                    $response = $controller->processCheckout($decoded->data->userId, $data);
-                    echo json_encode($response);
+                    $controller = new CheckoutController($db, $segredo);
+                    $response = $controller->processCheckout($decoded->data->email,$decoded->data->userId, $data);
+                    if (isset($response['init_point'])) {
+                        echo json_encode(['init_point' => $response['init_point']]);
+                    } else {
+                        echo json_encode(['error' => $response['error'] ?? 'Erro desconhecido']);
+                    }
                 } catch (Exception $e) {
                     echo json_encode(["message" => "Acesso negado"]);
                     http_response_code(401);
@@ -115,13 +120,21 @@ switch ($uri) {
             }
         }
         break;
+        case '/index.php/notifications':
+            if ($method == 'POST' || $method == 'GET') {
+                $controller = new CheckoutController($db);
+                $response = $controller->paymentNotification($_GET);
+                http_response_code(200);
+                echo 'OK';
+            }
+        break;
         case '/index.php/admin/reservations':
             if ($method == 'GET') {
                 $authHeader = $_SERVER['HTTP_X_AUTHORIZATION'] ?? '';
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                     $jwt = $matches[1];
                     try {
-                        $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                        $decoded = JWT::decode($jwt, new Key($segredo['JWT_SECRET'], 'HS256'));
                         if ($decoded->data->role !== 'admin') {
                             echo json_encode(["message" => "Acesso negado"]);
                             http_response_code(403);
@@ -146,7 +159,7 @@ switch ($uri) {
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                     $jwt = $matches[1];
                     try {
-                        $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                        $decoded = JWT::decode($jwt, new Key($segredo['JWT_SECRET'], 'HS256'));
                         if ($decoded->data->role !== 'admin') {
                             echo json_encode(["message" => "Acesso negado"]);
                             http_response_code(403);
@@ -172,7 +185,7 @@ switch ($uri) {
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                     $jwt = $matches[1];
                     try {
-                        $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                        $decoded = JWT::decode($jwt, new Key($segredo['JWT_SECRET'], 'HS256'));
                         if ($decoded->data->role !== 'admin') {
                             echo json_encode(["message" => "Acesso negado"]);
                             http_response_code(403);
@@ -198,7 +211,7 @@ switch ($uri) {
                 if (preg_match('/Bearer\s(\S+)/', $authHeader, $matches)) {
                     $jwt = $matches[1];
                     try {
-                        $decoded = JWT::decode($jwt, new Key($segredojwt['JWT_SECRET'], 'HS256'));
+                        $decoded = JWT::decode($jwt, new Key($segredo['JWT_SECRET'], 'HS256'));
                         if ($decoded->data->role !== 'admin') {
                             echo json_encode(["message" => "Access denied"]);
                             http_response_code(403);

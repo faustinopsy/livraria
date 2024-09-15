@@ -74,6 +74,13 @@ export function renderCart() {
                 });
             }
             return response.json();
+        }).then(data => {
+            if (data.init_point) {
+                // Redireciona o usuário para a página de pagamento do Mercado Pago
+                window.location.href = data.init_point;
+            } else {
+                alert('Erro ao iniciar o checkout.');
+            }
         })
         .then(data => {
             if (data.status) {

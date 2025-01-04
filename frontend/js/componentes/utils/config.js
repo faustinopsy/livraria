@@ -1,5 +1,5 @@
 const config = {
-    baseURL: 'http://localhost:8000'
+    baseURL: 'https://backlivraria.ceuvago.com'
 };
 
 export default config;
